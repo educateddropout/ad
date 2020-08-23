@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - User registration</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" href="../css/lib/bulma-extensions/bulma-switch/dist/css/bulma-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+    <style type="text/css">
+        .form-wrapper {
+          max-width: 30%;
+          min-width: 300px;
+          padding: 50px 30px 50px 30px;
+          margin: 50px auto;   
+          background-color: #ffffff;
+          border-radius: 5px;
+          box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
+        }
+
+        .form-group {
+          position:relative;  
+
+          & + .form-group {
+            margin-top: 30px;
+          }
+        }
+
+        .form-label {
+          position: absolute;
+          left: 0;
+          top: 10px;
+          color: #999;
+          background-color: #fff;
+          z-index: 10;
+          transition: transform 150ms ease-out, font-size 150ms ease-out;
+        }
+
+        .focused .form-label {
+          transform: translateY(-125%);
+          font-size: .75em;
+        }
+
+        .form-input {
+          position: relative;
+          padding: 12px 0px 5px 0;
+          width: 100%;
+          outline: 0;
+          border: 0;
+          box-shadow: 0 1px 0 0 #e5e5e5;
+          transition: box-shadow 150ms ease-out;
+          
+          &:focus {
+            box-shadow: 0 2px 0 0 blue;
+          }
+        }
+
+        .form-input.filled {
+          box-shadow: 0 2px 0 0 lightgreen;
+        }
+
+        .form-input.wrong {
+          box-shadow: 0 2px 0 0 red;
+        }
+
+        /* The switch - the box around the slider */
+        .switch {
+          position: relative;
+          display: inline-block;
+          width: 60px;
+          height: 34px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+
+        /* The slider */
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #ccc;
+          -webkit-transition: .4s;
+          transition: .4s;
+        }
+
+        .slider:before {
+          position: absolute;
+          content: "";
+          height: 26px;
+          width: 26px;
+          left: 4px;
+          bottom: 4px;
+          background-color: white;
+          -webkit-transition: .4s;
+          transition: .4s;
+        }
+
+        input:checked + .slider {
+          background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+          box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+          -webkit-transform: translateX(26px);
+          -ms-transform: translateX(26px);
+          transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+          border-radius: 34px;
+        }
+
+        .slider.round:before {
+          border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div id="registerUser">
+
+        
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+
+                <br>
+                
+
+                <div class="w3-row box is-marginless">
+                    <div class="w3-row">
+                        <div class="w3-row ">
+                            <div class="w3-col l6 is-size-4">
+                                <strong><i class="fas fa-user-tie"></i> &nbsp User Registration</strong>
+                            </div>
+                            <div class="w3-col l3">&nbsp</div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="w3-row">
+                        <div class="w3-col l4">&nbsp</div>
+                        <div class="w3-col l4">
+                            <div class="w3-row box">
+                                    <div class="form">
+                                        <br>
+                                        <div class="w3-row">
+                                            <div class="form-group" :class="{focused : input[0]}">
+                                                <label class="form-label " :class="{'has-text-info' : input[0]}" for="fullname" >Full Name</label>
+                                                <div class="w3-row">
+                                                    <div class="w3-col s11">
+                                                        <input id="fullname" class="form-input" 
+                                                        :class="{filled : inputModel[0].value != '' && inputModel[0].error == '',
+                                                                wrong : inputModel[0].error != ''}"
+                                                        maxlength="60" 
+                                                        v-model="inputModel[0].value" type="text" @blur="validateInput(0)" @focus="inputFocus(0)"/>
+                                                        <p class="help is-danger">{{inputModel[0].error}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <div class="w3-row">
+                                            <div class="form-group" :class="{focused : input[1]}">
+                                                <label class="form-label " :class="{'has-text-info' : input[1]}" for="nickname" >Nickname</label>
+                                                <div class="w3-row">
+                                                    <div class="w3-col s11">
+                                                        <input id="nickname" class="form-input" 
+                                                        :class="{filled : inputModel[1].value != '' && inputModel[1].error == '',
+                                                                wrong : inputModel[1].error != ''}"
+                                                        maxlength="20" 
+                                                        v-model="inputModel[1].value" type="text" @blur="validateInput(1)" @focus="inputFocus(1)"/>
+                                                        <p class="help is-danger">{{inputModel[1].error}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <br>
+
+                                        <div class="form-group" :class="{focused : input[2]}">
+                                            <label class="form-label" for="username" :class="{'has-text-info' : input[2]}">Username</label>
+                                            <div class="w3-row">
+                                                <div class="w3-col s11">
+                                                    <input id="username" class="form-input" 
+                                                    :class="{filled : inputModel[2].value != '' && inputModel[2].error == '',
+                                                                wrong : inputModel[2].error != ''}"
+                                                    maxlength="20"
+                                                    v-model="inputModel[2].value" type="text" @blur="validateInput(2)" @focus="inputFocus(2)"/>
+                                                    <p class="help is-danger">{{inputModel[2].error}}</p>
+
+                                                </div>
+                                                <div class="w3-col s1">
+
+                                                    <i class="fas fa-spinner fa-spin fa-2x w3-padding" v-if="usernameStatus == 'loading'"></i>
+
+                                                    <i class="fas fa-check-circle w3-text-green w3-padding fa-2x" v-else-if="usernameStatus == 'nomatch'"></i>
+
+                                                    <i class="fas fa-times-circle w3-text-red w3-padding fa-2x" v-if="usernameStatus == 'match'"></i>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <div class="w3-row has-text-grey">
+                                            
+                                            <label class=" ">Are you a Dentist?</label>
+                                            <div class="w3-row w3-margin-top">
+                                                <label class="switch">
+                                                    <input type="checkbox" v-model="isDentist">
+                                                    <span class="slider"></span>
+                                                    
+                                                </label>
+                                                &nbsp<span class="is-size-5">Yes</span>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <br>
+                                        <br>
+                                        <button class="button is-info" @click="registerUser" :disabled="disableChangeButton"><strong>Register</strong></button>
+                                    </div>
+                                    <modal-message
+                                        :is-active = "showSuccess"
+                                        :message = "successMessage"
+                                        :is-loading = "messageLoading"
+                                        @close-modal = "closeSuccessModal"
+                                    >
+                                    </modal-message>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/jquery/dist/jquery.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/components/layouts/modalMessage.js"></script>
+    <script src="../js/utilities/userAuthentication.js"></script>
+    <script src="../js/instances/registerUser.js"></script>
+
+</body>
+
+</html>

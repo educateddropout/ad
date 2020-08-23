@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/lib/fontawesome-free/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+    <link rel="stylesheet" href="../css/lib/bulma-extensions/bulma-checkradio/dist/css/bulma-checkradio.min.css">
+    <link rel="stylesheet" href="../css/lib/bulma-extensions/bulma-switch/dist/css/bulma-switch.min.css">
+    <link rel="stylesheet" href="../css/lib/bulma-extensions/bulma-steps/dist/css/bulma-steps.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/signature-pad.css">
+    
+</head>
+<style type="text/css">
+    .margin-bottom {
+        margin-bottom: 40px;
+    }
+    #app {
+        font-family: "Avenir", Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        color: #2c3e50;
+        margin-top: 60px;
+    }
+</style>
+<body>
+    
+    <br>
+    <br>
+    <div class="row container" id="root">
+        <!-- header -->
+        <div class="column is-4 is-offset-4 w3-center">
+            <a href="dashboard.html"><img src="../assets/images/ad_logo.png" width="500" ></a>
+        </div>
+        <br>
+        <div class="steps w3-hide-small">
+            <div class="step-item" v-bind:class="{'is-completed' : stepCounter > 1}">
+                <div class="step-marker">
+                <span class="icon">
+                    <i class="fa fa-question" ></i>
+                </span>
+                </div>
+                <div class="step-details">
+                    <p class="step-title">Step 1</p>
+                    <p>Personal information.</p>
+                </div>
+            </div>
+            <div class="step-item " v-bind:class="{'is-completed' : stepCounter > 2}">
+                <div class="step-marker">
+                    <i class="fa fa-file-medical"></i>
+                </div>
+                <div class="step-details">
+                    <p class="step-title">Step 2</p>
+                    <p>Medical Information</p>
+                </div>
+            </div>
+            <div class="step-item" v-bind:class="{'is-completed' : stepCounter > 3}">
+                <div class="step-marker">
+                    <i class="fa fa-signature"></i>
+                </div>
+                <div class="step-details">
+                    <p class="step-title">Step 3</p>
+                    <p>Signature</p>
+                </div>
+            </div>
+            <div class="step-item" v-bind:class="{'is-completed' : stepCounter > 4}" >
+                <div class="step-marker">
+                    <span class="icon">
+                        <i class="fa fa-flag"></i>
+                    </span>
+                </div>
+                <div class="step-details">
+                    <p class="step-title">Step 4</p>
+                    <p>Finish Line</p>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!-- Start of 1st Page -->
+        <div class="row box margin-bottom" v-show="stepCounter == 1">
+
+            <div class="column is-offset-1 is-10">
+                <div class="row has-text-centered is-size-4"><strong>Personal Information</strong></div>
+                
+                <hr>
+                <br>
+
+                <!-- Name -->
+                <div class="row">
+                    <div class="columns">
+                        <div class="column is-one-quarter is-size-5">
+                            <strong>Name:</strong>
+                        </div>
+                        <div class="column">
+                            <div class="columns">
+                                <div class="column is-4">
+                                    <div class="field">
+                                        <div class="control">
+                                            <input class="input" :class="{ 'is-danger' : first_name_err}" type="text" placeholder="First Name" v-model="first_name" @keyup="first_name = first_name.toUpperCase()">
+                                            <p class="help has-text-danger" v-if="first_name_err">This is required</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-4">
+                                    <div class="field">
+                                        <div class="control">
+                                            <input class="input" type="text" placeholder="Middle Name" v-model="middle_name" @keyup="middle_name = middle_name.toUpperCase()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column is-4">
+                                    <div class="field">
+                                        <div class="control">
+                                            <input class="input" :class="{ 'is-danger' : last_name_err}" type="text" placeholder="Last Name" v-model="last_name" @keyup="last_name = last_name.toUpperCase()">
+                                            <p class="help has-text-danger" v-if="first_name_err">This is required</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of Name -->
+
+                <br>
+
+                <!-- Sex -->
+                <input-div>
+                    <template slot="fieldName"> Sex: </template>
+                    <input class="is-checkradio is-info" id="sexRadio1" type="radio" value="1" name="sex_radio" checked="checked" v-model="sex_radio">
+                    <label for="sexRadio1">Male</label>
+                    <input class="is-checkradio is-info" id="sexRadio2" type="radio" value="2" name="sex_radio" v-model="sex_radio">
+                    <label for="sexRadio2">Female</label>
+                </input-div>
+                <!-- End of Sex -->
+
+                <br>
+
+                <!-- Date of Birth -->
+                <input-div>
+                    <template slot="fieldName">
+                        Date of Birth:
+                    </template>
+                    <input id="" class="input" :class="{ 'is-danger' : date_of_birth_err}" type="date" placeholder="mm/dd/yyyy" v-model="date_of_birth" name="date_of_birth">
+                    <p class="help has-text-danger" v-if="date_of_birth_err">This is required</p>
+                </input-div>
+                <!-- End of Date of birth -->
+    
+                <br>
+
+                <!-- Mobile No. -->
+                <input-div>
+                    <template slot="fieldName">
+                        Mobile No.
+                    </template>
+                    <div class="field is-horizontal">
+                        <div class="field-body">
+                            <div class="field is-expanded">
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <a class="button is-static">
+                                        +63
+                                        </a>
+                                    </p>
+                                    <p class="control is-expanded" >
+                                        <input class="input" type="tel" placeholder="Your phone number" maxlength="10" name="mobile_no" v-model="mobile_no">
+                                    </p>
+                                </div>
+                                <p class="help">Do not enter the first zero</p>
+                            </div>
+                        </div>
+                    </div>
+                </input-div>
+                <!-- End of Mobile No. -->
+                
+                <br>
+
+                <!-- Email Address -->
+                <input-div>
+                    <template slot="fieldName">
+                        Email Address:
+                    </template>
+                    <input class="input" type="email" placeholder="Your email address" v-model="email" name="email">
+                </input-div>
+                <!-- End of Email Address -->
+                
+                <br>
+
+                <!-- Address -->
+                <input-div>
+                    <template slot="fieldName">
+                        Address:
+                    </template>
+                    <textarea class="textarea" :class="{ 'is-danger' : address_err}" type="text" placeholder="Your home address" v-model="address" @keyup="address = address.toUpperCase()"></textarea>
+                    <p class="help has-text-danger" v-if="address_err">This is required</p>
+                </input-div>
+                <!-- End of  Address -->
+
+                <br>
+
+                <!-- Occupation -->
+                <input-div>
+                    <template slot="fieldName">
+                        Occupation:
+                    </template>
+                    <input class="input" type="text" placeholder="" v-model="occupation" name="occupation" @keyup="occupation = occupation.toUpperCase()">
+                </input-div>
+                <!-- End of  Occupation -->
+
+                <br>
+
+                <!-- Dental Insurance -->
+                
+                <input-div>
+                    <template slot="fieldName"> Dental Insurance: </template>
+                    <div class="field">
+                        <input id="dentalInsurance" class="switch is-info is-rtl" type="checkbox" v-model="dental_insurance">
+                        <label for="dentalInsurance">Yes </label>&nbsp
+                        &nbsp<label for="dentalInsurance">No </label>
+                    </div>
+                </input-div>
+                <!-- End of Dental Insurance -->
+
+                <!-- Dental Insurance Name -->
+                <input-div v-if="dental_insurance == 1">
+                    
+                    <p class="help"><strong>Insurance Name:</strong></p>
+                    <input class="input" :class="{ 'is-danger' : dental_insurance_name_err != ''}" type="text" placeholder="" v-model="dental_insurance_name" @keyup="dental_insurance_name = dental_insurance_name.toUpperCase()">
+                    <p class="help has-text-danger">{{ dental_insurance_name_err }}</p>
+                </input-div>
+                <!-- End of Dental Insurance Name-->
+
+                <!-- Dental Insurance Validity -->
+                <input-div v-if="dental_insurance == 1">
+                    
+                    <p class="help"><strong>Effective Date:</strong></p>
+                    <input id="" class="input" :class="{ 'is-danger' : dental_insurance_validity_err != ''}" type="date" placeholder="mm/dd/yyyy" v-model="dental_insurance_validity">
+                    <p class="help has-text-danger" v-if="dental_insurance_name_err">This is required</p>
+                </input-div>
+                <!-- End of Dental Insurance Name-->
+
+                <br>
+
+                <!-- Referral -->
+                <input-div>
+                    <template slot="fieldName">
+                        How did you know AmpongDental?
+                    </template>
+                    <div class="select is-fullwidth">
+                        <div class="select is-fullwidth">
+                            <select v-model="referral" >
+                                <option value="-1" disabled>Please select</option>
+                                <option value="1" >FACEBOOK</option>
+                                <option value="2" >TWITTER</option>
+                                <option value="3" >INSTAGRAM</option>
+                                <option value="4" >FRIENDS</option>
+                                <option value="5" >N/A</option>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                </input-div>
+                <!-- End of Referral -->
+
+                <br>
+
+                <!-- Reason -->
+                <input-div>
+                    <template slot="fieldName">
+                       What is your reason for dental consultation?
+                    </template>
+                    <input class="input" type="text" placeholder="" v-model="reason_for_dental" name="reason_for_dental" @keyup="reason_for_dental = reason_for_dental.toUpperCase()">
+                </input-div>
+                <!-- End of Reason -->
+
+                <br>
+
+                <div class="row has-text-centered">
+                    <button class="button is-warning" disabled>Previous</button>
+                    <button class="button is-info" @click="onNextStep(1)">Next</button>
+                </div>
+            </div>
+        </div>
+        <!-- end of 1st Page -->
+
+        <!--- Start of 2nd Page -->
+        <div class="row box margin-bottom" v-show="stepCounter == 2">
+            <div class="column is-offset-1 is-10">
+                <div class="row has-text-centered is-size-4"><strong>Medical Information</strong></div>
+                <hr>
+                <br>
+                <div class="row is-size-4">
+                    <strong>Physician Details</strong>
+                </div>
+                <br>
+                <!-- Physician Name -->
+                <div class="is-size-6">
+                <input-div2>
+                    <template slot="fieldName">
+                       <strong>Name:</strong>
+                    </template>
+                    <input class="input" type="text" placeholder="" v-model="physician_name" @keyup="physician_name = physician_name.toUpperCase()">
+                </input-div2>
+                <!-- End of Physician Name -->
+                <br>
+
+                <!-- Physician Specialty -->
+                <input-div2>
+                    <template slot="fieldName">
+                        <strong>Specialty:</strong>
+                    </template>
+                    <input class="input" type="text" placeholder="" v-model="physician_specialty" @keyup="physician_specialty = physician_specialty.toUpperCase()">
+                </input-div2>
+                <!-- End of Physician Name -->
+                <br>
+
+                <!-- Physician Address -->
+                <input-div2>
+                    <template slot="fieldName">
+                        <strong>Office Address:</strong>
+                       
+                    </template>
+                    <input class="input" type="text" placeholder="" v-model="physician_address" @keyup="physician_address = physician_address.toUpperCase()">
+                </input-div2>
+                <!-- End of Physician Specialty -->
+                <br>
+
+                <!-- Physician Number -->
+                <input-div2>
+                    <template slot="fieldName">
+                       <strong>Office Number:</strong>
+                    </template>
+                    <input class="input" type="text" placeholder="" v-model="physician_number">
+                </input-div2>
+                <!-- End of Physician Number -->
+                <br>
+                </div>
+                
+                <hr>
+                <br>
+                
+                <!-- Q1 -->
+                <input-div3>
+                    <template slot="fieldName">
+                       1. Are you in good health? 
+                    </template>
+                    <input class="is-checkradio" id="q1_1" type="radio" value="1" v-model="q1">
+                    <label for="q1_1">Yes</label>
+                    <input class="is-checkradio" id="q1_2" type="radio" value="2" v-model="q1">
+                    <label for="q1_2">No</label>
+                    <input class="is-checkradio" id="q1_3" type="radio" value="-1" v-model="q1">
+                    <label for="q1_3">No Answer</label>
+                </input-div3>
+                <!-- End of Q1 -->
+                
+                <br>
+
+                <!-- Q2 -->
+                <input-div3>
+                    <template slot="fieldName">
+                       2. Are you under medical treatment now?
+                    </template>
+                    <input class="is-checkradio" id="q2_1" type="radio" value="1" v-model="q2">
+                    <label for="q2_1">Yes</label>
+                    <input class="is-checkradio" id="q2_2" type="radio" value="2" v-model="q2">
+                    <label for="q2_2">No</label>
+                    <input class="is-checkradio" id="q2_3" type="radio" value="-1" v-model="q2">
+                    <label for="q2_3">No Answer</label>
+                </input-div3>
+                <sub-input>
+                    <template slot="question">
+                        What is the condition being treated?
+                    </template>
+                    <input type="text" class="input" v-model="q2_2" :disabled="q2 != 1"  @keyup="q2_2 = q2_2.toUpperCase()">
+                </sub-input>
+                <!-- End of Q2 -->
+                
+                <br>
+
+                <!-- Q3 -->
+                <input-div3>
+                    <template slot="fieldName">
+                       3. Have you ever had serious illness or surgical operation?
+                    </template>
+                    <input class="is-checkradio" id="q3_1" type="radio" value="1" v-model="q3">
+                    <label for="q3_1">Yes</label>
+                    <input class="is-checkradio" id="q3_2" type="radio" value="2" v-model="q3">
+                    <label for="q3_2">No</label>
+                    <input class="is-checkradio" id="q3_3" type="radio" value="-1" v-model="q3">
+                    <label for="q3_3">No Answer</label>
+                </input-div3>
+                <sub-input >
+                    <template slot="question">
+                        What illness or operation?
+                    </template>
+                    <input type="text" class="input" v-model="q3_2" :disabled="q3 != 1" @keyup="q3_2 = q3_2.toUpperCase()">
+                </sub-input>
+                <!-- End of Q3 -->
+                
+                <br>
+
+                <!-- Q4 -->
+                <input-div3>
+                    <template slot="fieldName">
+                       4. Have you ever been hospitalized?
+                    </template>
+                    <input class="is-checkradio" id="q4_1" type="radio" value="1" v-model="q4">
+                    <label for="q4_1">Yes</label>
+                    <input class="is-checkradio" id="q4_2" type="radio" value="2" v-model="q4">
+                    <label for="q4_2">No</label>
+                    <input class="is-checkradio" id="q4_3" type="radio" value="-1" v-model="q4">
+                    <label for="q4_3">No Answer</label>
+                </input-div3>
+                <sub-input >
+                    <template slot="question">
+                        When and why?
+                    </template>
+                    <input type="text" class="input" v-model="q4_2" :disabled="q4 != 1" @keyup="q4_2 = q4_2.toUpperCase()">
+                </sub-input>
+                <!-- End of Q4 -->
+                
+                <br>
+
+                <!-- Q5 -->
+                <input-div3>
+                    <template slot="fieldName">
+                       5. Are you taking prescription/non-prescription medication?
+                    </template>
+                    <input class="is-checkradio" id="q5_1" type="radio" value="1" v-model="q5">
+                    <label for="q5_1">Yes</label>
+                    <input class="is-checkradio" id="q5_2" type="radio" value="2" v-model="q5">
+                    <label for="q5_2">No</label>
+                    <input class="is-checkradio" id="q5_3" type="radio" value="-1" v-model="q5">
+                    <label for="q5_3">No Answer</label>
+                </input-div3>
+                <sub-input >
+                    <template slot="question">
+                        Please specify?
+                    </template>
+                    <input type="text" class="input" v-model="q5_2" :disabled="q5 != 1" @keyup="q5_2 = q5_2.toUpperCase()">
+                </sub-input>
+                <!-- End of Q5 -->
+                
+                <br>
+
+                <!-- Q6 -->
+                <input-div3>
+                    <template slot="fieldName">
+                       6. Do you use tobacco products?
+                    </template>
+                    <input class="is-checkradio" id="q6_1" type="radio" value="1" v-model="q6">
+                    <label for="q6_1">Yes</label>
+                    <input class="is-checkradio" id="q6_2" type="radio" value="2" v-model="q6">
+                    <label for="q6_2">No</label>
+                    <input class="is-checkradio" id="q6_3" type="radio" value="-1" v-model="q6">
+                    <label for="q6_3">No Answer</label>
+                </input-div3>
+                <!-- End of Q6 -->
+                
+                <br>
+
+                <!-- Q7 -->
+                <input-div3>
+                    <template slot="fieldName">
+                       7. Do you use alcohol, coccaine or other dangerous drugs?
+                    </template>
+                    <input class="is-checkradio" id="q7_1" type="radio" value="1" v-model="q7">
+                    <label for="q7_1">Yes</label>
+                    <input class="is-checkradio" id="q7_2" type="radio" value="2" v-model="q7">
+                    <label for="q7_2">No</label>
+                    <input class="is-checkradio" id="q7_3" type="radio" value="-1" v-model="q7">
+                    <label for="q7_3">No Answer</label>
+                </input-div3>
+                <!-- End of Q7 -->
+
+                <br>
+                <!-- Q8 -->
+                <div class="row">
+                    <strong><span class="is-size-5">8. Are you allergic to any of the following:</span></strong>
+                    <div class="row" >
+                        <div class="column is-10 is-offset-1">
+                            <div class="columns">
+                                <div class="column is-4">
+                                    <div class="field">
+                                        <input id="q8_1" class="is-checkradio is-info" type="checkbox" v-model="q8_1">
+                                        <label for="q8_1">Local Anesthetic</label>
+                                    </div>
+                                </div>
+                                <div class="column is-4">
+                                    <div class="field">
+                                        <input id="q8_2" class="is-checkradio is-info" type="checkbox" v-model="q8_2">
+                                        <label for="q8_2">Antibiotic</label>
+                                    </div>
+                                </div>
+                                <div class="column is-4">
+                                    <div class="field">
+                                        <input id="q8_3" class="is-checkradio is-info" type="checkbox" v-model="q8_3">
+                                        <label for="q8_3">Sulfa Drugs</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="column is-10 is-offset-1">
+                            <div class="columns">
+                                <div class="column is-4">
+                                    <div class="field">
+                                        <input id="q8_4" class="is-checkradio is-info" type="checkbox" v-model="q8_4">
+                                        <label for="q8_4">Aspirin</label>
+                                    </div>
+                                </div>
+                                <div class="column is-4">
+                                    <div class="field">
+                                        <input id="q8_5" class="is-checkradio is-info" type="checkbox" v-model="q8_5">
+                                        <label for="q8_5">Latex</label>
+                                    </div>
+                                </div>
+                                <div class="column is-4">
+                                    <div class="field">
+                                        <input id="q8_6" class="is-checkradio is-info" type="checkbox" v-model="q8_6">
+                                        <label for="q8_6">Others</label>
+                                        <div class="row w3-margin-top">
+                                            <input class="input" placeholder="Please specify" maxlength="60" v-model="q8_6Other" :disabled="!q8_6">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of Q8 -->
+    
+                <!-- Q9 -->
+                <br>
+                <div class="row">
+                    <div class="columns">
+                        <div class="column is-3 is-size-5"><strong>9.Bleeding Time:</strong></div>
+                        <div class="column is-4"><input class="input" maxlength="60" v-model="q9" ></div>
+                    </div>
+                </div>
+                <!-- End of Q9 -->
+
+                <!-- Q10 -->
+                <input-div3>
+                    <template slot="fieldName">
+                       10. For Women Only:
+                    </template>
+                </input-div3>
+                <div class="row">
+                    <div class="columns">
+                        <div class="column is-offset-2 is-6 is-size-5">
+                            Are you pregnant?
+                        </div>
+                        <div class="column">
+                            <div class="field ">
+                                <div class="row">
+                                    <input class="is-checkradio" id="q10_1_1" type="radio" value="1" v-model="q10_1">
+                                    <label for="q10_1_1">Yes</label>
+                                    <input class="is-checkradio" id="q10_1_2" type="radio" value="2" v-model="q10_1">
+                                    <label for="q10_1_2">No</label>
+                                    <input class="is-checkradio" id="q10_1_3" type="radio" value="-1" v-model="q10_1">
+                                    <label for="q10_1_3">No Answer</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <div class="column is-offset-2 is-6 is-size-5">
+                            Are you nursing?
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <input class="is-checkradio" id="q10_2_1" type="radio" value="1" v-model="q10_2">
+                                <label for="q10_2_1">Yes</label>
+                                <input class="is-checkradio" id="q10_2_2" type="radio" value="2" v-model="q10_2">
+                                <label for="q10_2_2">No</label>
+                                <input class="is-checkradio" id="q10_2_3" type="radio" value="-1" v-model="q10_2">
+                                <label for="q10_2_3">No Answer</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <div class="column is-offset-2 is-6 is-size-5">
+                            Are you taking birth control pills?
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <input class="is-checkradio" id="q10_3_1" type="radio" value="1" v-model="q10_3">
+                                <label for="q10_3_1">Yes</label>
+                                <input class="is-checkradio" id="q10_3_2" type="radio" value="2" v-model="q10_3">
+                                <label for="q10_3_2">No</label>
+                                <input class="is-checkradio" id="q10_3_3" type="radio" value="-1" v-model="q10_3">
+                                <label for="q10_3_3">No Answer</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of Q10 -->
+
+                <!-- Q9 -->
+                <br>
+                <div class="row">
+                    <div class="columns">
+                        <div class="column is-3 is-size-5"><strong>11.Blood Type:</strong></div>
+                        <div class="column is-4"><input class="input" type="text" maxlength="60" v-model="q11" @keyup="q11 = q11.toUpperCase()"></div>
+                    </div>
+                </div>
+                <!-- End of Q9 -->
+
+                <!-- Q9 -->
+                <br>
+                <div class="row">
+                    <div class="columns">
+                        <div class="column is-3 is-size-5"><strong>12.Blood Pressure:</strong></div>
+                        <div class="column is-4"><input class="input" maxlength="60" type="text" v-model="q12"  @keyup="q12 = q12.toUpperCase()"></div>
+                    </div>
+                </div>
+                <!-- End of Q9 -->
+
+                <br>
+                <!-- Q13 -->
+                <div class="row">
+                    <span class="is-size-5"><strong>13. Do you have or have you had any of the following? Please check which apply.</strong></span>
+                    <q13-checkboxes>
+                        <template slot="column1">
+                            <input id="q13_1" class="is-checkradio is-info" type="checkbox" v-model="q13_1">
+                            <label for="q13_1">High Blood Pressure</label>
+                        </template>
+                        <template slot="column2">
+                                <input id="q13_2" class="is-checkradio is-info" type="checkbox" v-model="q13_2">
+                                <label for="q13_2">Heart Disease</label>
+                        </template>
+                        <template slot="column3">
+                            <input id="q13_3" class="is-checkradio is-info" type="checkbox" v-model="q13_3">
+                            <label for="q13_3">Cancer / Tumors</label>
+                        </template>
+                    </q13-checkboxes>
+                    <q13-checkboxes>
+                        <template slot="column1">
+                            <input id="q13_4" class="is-checkradio is-info" type="checkbox" v-model="q13_4">
+                            <label for="q13_4">Low Blood Pressure</label>
+                        </template>
+                        <template slot="column2">
+                            <input id="q13_5" class="is-checkradio is-info" type="checkbox" v-model="q13_5">
+                            <label for="q13_5">Heart Murmur</label>
+                        </template>
+                        <template slot="column3">
+                            <input id="q13_6" class="is-checkradio is-info" type="checkbox" v-model="q13_6">
+                            <label for="q13_6">Anemia</label>
+                        </template>
+                    </q13-checkboxes>
+                    <q13-checkboxes>
+                        <template slot="column1">
+                            <input id="q13_7" class="is-checkradio is-info" type="checkbox" v-model="q13_7">
+                            <label for="q13_7">Epilepsy / Convulsion</label>
+                        </template>
+                        <template slot="column2">
+                            <input id="q13_8" class="is-checkradio is-info" type="checkbox" v-model="q13_8">
+                            <label for="q13_8">Hepatitis / Liver Disease</label>
+                        </template>
+                        <template slot="column3">
+                            <input id="q13_9" class="is-checkradio is-info" type="checkbox" v-model="q13_9">
+                            <label for="q13_9">Angina</label>
+                        </template>
+                    </q13-checkboxes>
+                    <!-- q13 row 4 -->
+                    <q13-checkboxes>
+                        <template slot="column1">
+                            <input id="q13_10" class="is-checkradio is-info" type="checkbox" v-model="q13_10">
+                            <label for="q13_10">AIDS or HIV Infection</label>
+                        </template>
+                        <template slot="column2">
+                            <input id="q13_11" class="is-checkradio is-info" type="checkbox" v-model="q13_11">
+                            <label for="q13_11">Rheumatic Fever</label>
+                        </template>
+                        <template slot="column3">
+                            <input id="q13_12" class="is-checkradio is-info" type="checkbox" v-model="q13_12">
+                            <label for="q13_12">Asthma</label>
+                        </template>
+                    </q13-checkboxes>
+                    <!-- q13 row 5 -->
+                    <q13-checkboxes>
+                        <template slot="column1">
+                            <input id="q13_13" class="is-checkradio is-info" type="checkbox" v-model="q13_13">
+                            <label for="q13_13">Sexually Transmitted Disease</label>
+                        </template>
+                        <template slot="column2">
+                            <input id="q13_14" class="is-checkradio is-info" type="checkbox" v-model="q13_14">
+                            <label for="q13_14">Hay Fever / Allergies</label>
+                        </template>
+                        <template slot="column3">
+                            <input id="q13_15" class="is-checkradio is-info" type="checkbox" v-model="q13_15">
+                            <label for="q13_15">Emphysema</label>
+                        </template>
+                    </q13-checkboxes>
+                    <!-- q13 row 5 -->
+                    <q13-checkboxes>
+                        <template slot="column1">
+                            <input id="q13_16" class="is-checkradio is-info" type="checkbox" v-model="q13_16">
+                            <label for="q13_16">Other</label>
+
+                            <div class="row w3-margin-top">
+                                <input class="input" placeholder="Please specify" maxlength="60" v-model="q13_16Other" :disabled="!q13_16">
+                            </div>
+                        </template>
+                       
+                    </q13-checkboxes>
+                </div>
+                <!-- End of Q13 -->
+
+                <hr>
+                <br>
+                <div class="row has-text-centered">
+                    <button class="button is-warning " @click="onPreviousStep(2)">Previous</button>
+                    <button class="button  is-info " @click="onNextStep(2)">Next</button>
+                </div>
+            </div>
+        </div>
+        <!--- End of 2nd Page -->
+
+        <!--- Start of 3rd Page -->
+        <div class="row box margin-bottom" v-show="stepCounter == 3">
+            
+            <div class="row">
+                <div class="column is-10 is-offset-1">
+                    <div clsas="row">
+                        <div class="row has-text-centered ">
+                            <br>
+                            <canvas class="is-fullwidth" id="signature" style="border: 1px solid #ddd;"></canvas>
+                            <br>
+                            
+                            <img id="dummyImage" src="" hidden>
+                            <button class="button is-danger" @click="clearSignature"><i class="fas fa-trash-alt"></i>&nbsp Clear</button>
+                        </div>
+                    
+
+                        <hr>
+                        
+                        <div class="row has-text-centered">
+                            <button class="button is-warning" @click="onPreviousStep(3)">Previous</button>
+                            <button  id="proceedNext" class="button is-info " @click="onNextStep(3)" >Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <!--- End of 3rd Page -->
+
+        <!--- Start of 4th Page -->
+        <div class="row box margin-bottom" v-show="stepCounter == 4">
+            <div class="column is-offset-1 is-10">
+                <br>
+                <br>
+                <div class="row has-text-centered">
+                        <span class="is-size-2">THANK YOU FOR THE REGISTRATION!</span>
+                </div>
+                <br>
+                <br>
+                <div class="row has-text-centered">
+                    <button class="button is-info" @click="onNextStep(4)">Done!</button>
+                </div>
+            </div>
+        </div>
+        <!--- End of 4th Page -->
+
+
+    </div>
+    
+
+
+    <!-- script frame -->
+    <script src="../js/lib/jquery/dist/jquery.min.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/lib/signature_pad/dist/signature_pad.umd.min.js"></script>
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/utilities/lib.js"></script>
+    
+    <script src="../js/instances/registerWoSig.js"></script>
+    
+    
+    <script type="text/javascript">
+        jQuery(document).ready(function($){
+    
+            var canvas = document.getElementById("signature");
+            var signaturePad = new SignaturePad(canvas);
+
+             $('#save-signature').on('click', function(){
+                //console.log(signaturePad.toDataURL());
+                if(!signaturePad.isEmpty()){
+
+                    $("#dummyImage").attr("src",signaturePad.toDataURL());
+
+                    $("#proceedNext").prop('disabled',false);
+                }
+                else{
+                    alert("Please add signature");
+                    $("#proceedNext").prop('disabled',true);
+                }
+                
+            });
+            
+        });
+
+    </script>
+</body>
+
+</html>

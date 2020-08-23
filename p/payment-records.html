@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - Payment Records</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free-5.7.2-web/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/login.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+</head>
+
+<body>
+    
+    <div id="paymentRecords">
+
+        <header-nav
+            :page-counter= "pageCounter"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+                <br>
+                <div class="w3-row box is-marginless">
+                    
+                    <dates-selection
+                        
+                        ref = "dateSelection"
+                        :user-data = "userData"
+                        @get-list-of-payments = "sendListOfPayments"
+                        @send-selected-date = "getListOfMisc"
+
+                    ></dates-selection>
+
+                    <br>
+                    <div class="w3-row">
+                        <button class="button w3-right is-success is-outlined" @click="printPaymentRecords">
+                            <i class="fas fa-print"></i> &nbspPrint Payment Records
+                        </button>
+                    </div>
+                    <br>
+                    
+                    <filters
+
+                        :user-data = "userData"
+                        :dentist-check = "dentistCheck"
+                        :dentists-library = "dentistsLibrary"
+                        :payment-type-library = "paymentTypeLibrary"
+                        :payment-type-check = "paymentTypeCheck"
+
+                    ></filters>
+                    <br>
+
+                    <payments-table
+                        
+                        ref = "paymentsTable"
+                        :misc-expenses = "miscExpenses"
+                        :cash-denomination = "cashDenomination"
+                        :user-data = "userData"
+                        :dentist-check = "dentistCheck"
+                        :dentists-library = "dentistsLibrary"
+                        :payment-type-library = "paymentTypeLibrary"
+                        :payment-type-check = "paymentTypeCheck"
+                        :is-print-cash-denomination = "isPrintCashDenomination"
+
+
+                    ></payments-table>
+
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/utilities/getParameters.js"></script>
+    <script src="../js/utilities/validationRoutineReports.js"></script>
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/moment/min/moment.min.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/components/layouts/modalMessage.js"></script>
+
+
+    <script src="../js/components/reports/payment/datesSelection.js"></script>
+    <script src="../js/components/reports/payment/paymentsTable.js"></script>
+    <script src="../js/components/reports/payment/filters.js"></script>
+
+    <script src="../js/instances/payments.js"></script>
+
+</body>
+
+</html>

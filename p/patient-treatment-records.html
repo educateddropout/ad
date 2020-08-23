@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - List of Patients</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free-5.7.2-web/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/login.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+</head>
+<body>
+    
+    <div id="patientTreatmentRecords">
+
+        <header-nav
+            :page-counter= "pageCounter"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+                <nav class="breadcrumb w3-hide-small" aria-label="breadcrumbs">
+                    <ul>
+                        <br>
+                        <li><a href="patients.html">List of Patients</a></li>
+                        <li class="is-active"><a href="#" aria-current="page">Patient Information</a></li>
+                    </ul>
+                </nav>
+
+                <div class="w3-row box is-marginless">
+
+                    <patient-tab-selection
+                        :patient-id = "patientId"
+                        :user-data = "userData"
+                        :current-tab = "currentTab"
+                    ></patient-tab-selection>
+
+                    <treatment-record-form
+
+                        :user-data = "userData"
+                        :patient-id = "patientId"
+                        :dentists-library = "dentistsLibrary"
+                         @update-treatment-records = "updateTreatmentRecords"
+
+                    ></treatment-record-form>
+
+                    <patient-treatment-records
+                        ref = "patientTreatmentRecords"
+                        :user-data = "userData"
+                        :patient-id = "patientId"
+                        @open-treatment-update-modal = "openTreatmentUpdateModal"
+                        @open-payment-modal = "openPaymentModal"
+                        @open-delete-treatment = "deleteTreatmentConfirmation"
+
+                    ></patient-treatment-records>
+
+                    <treatment-update-modal
+
+                        ref = "treatmentUpdateModal"
+                        :dentists-library = "dentistsLibrary"
+                        :patient-id = "patientId"
+                        :user-data = "userData"
+                        @unselect-table-row = "unSelectTableRow"
+                        @update-treatment-records = "updateTreatmentRecords"
+
+                    ></treatment-update-modal>
+
+                    <modal-message
+                        :is-active = "isOpenDelete"
+                        :message = "deleteMessage"
+                        :is-confirmation = "isDeleteConfirmation"
+                        :is-loading = "isDeleteLoading"
+                        @close-modal = "closeDeleteModal"
+                        @is-confirmed = "proceedTreatmentDeletion"
+
+                    ></modal-message>
+
+                    <modal-message
+                        :is-active = "isOpenDeletePayment"
+                        :message = "deleteMessagePayment"
+                        :is-confirmation = "isDeleteConfirmationPayment"
+                        :is-loading = "isDeleteLoadingPayment"
+                        @close-modal = "closeDeleteModalPayment"
+                        @is-confirmed = "proceedPaymentDeletion"
+
+                    ></modal-message>
+                    
+                    <payment-modal
+
+                        ref = "paymentModal"
+                        :dentists-library = "dentistsLibrary"
+                        :patient-id = "patientId"
+                        :user-data = "userData"
+                        :payment-type-library = "paymentTypeLibrary"
+                        @unselect-table-row = "unSelectTableRow"
+                        @update-payment-records = "updatePaymentRecords"
+                        @update-treatment-records = "updateTreatmentRecords"
+
+                    ></payment-modal>
+                    
+                    <hr>
+
+                    <patient-payment-records
+                        
+                        ref = "patientPaymentRecords"
+                        :user-data = "userData"
+                        :patient-id = "patientId"
+                        @open-update-payment-modal = "openUpdatePaymentModal"
+                        @open-delete-payment = "deletePaymentConfirmation"
+
+                    ></patient-payment-records>
+
+                    <update-payment-modal
+                        
+                        ref = "updatePaymentModal"
+                        :patient-id = "patientId"
+                        :user-data = "userData"
+                        :payment-type-library = "paymentTypeLibrary"
+                        @unselect-payment-table-row = "unSelectPaymentTableRow"
+                        @update-payment-records = "updatePaymentRecords"
+                        @update-treatment-records = "updateTreatmentRecords"
+
+                    ></update-payment-modal>
+
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/utilities/getParameters.js"></script>
+    <script src="../js/utilities/validationRoutinePatientTreatmentRecords.js"></script>
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/moment/min/moment.min.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/components/layouts/modalMessage.js"></script>
+    
+    <script src="../js/components/patient/patientTabSelection.js"></script>
+    <script src="../js/components/patient/patientTreatmentRecords/patientPaymentRecords.js"></script>
+    <script src="../js/components/patient/patientTreatmentRecords/treatmentRecordForm.js"></script>
+    <script src="../js/components/patient/patientTreatmentRecords/patientTreatmentRecords.js"></script>
+    <script src="../js/components/patient/patientTreatmentRecords/paymentModal.js"></script>
+    <script src="../js/components/patient/patientTreatmentRecords/updatePaymentModal.js"></script>
+    <script src="../js/components/patient/patientTreatmentRecords/treatmentUpdateModal.js"></script>
+
+    <script src="../js/instances/patientTreatmentRecord.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - List of Patients</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/login.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+</head>
+<body>
+    
+    <div id="patients">
+
+        <header-nav
+            :page-counter= "pageCounter"
+            @send-total-pending-count = "updateTotalPendingCount"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+                <nav class="breadcrumb" aria-label="breadcrumbs">
+                    <div class="w3-row w3-hide-small">
+                        <br>
+                    </div>
+                    <ul>
+                        <li><a href="#">List of Patients</a></li>
+                    </ul>
+                </nav>
+
+                <div class="w3-row box is-marginless">
+                    <div class="w3-row" v-if="userData.userType != 2">
+                        <a @click="goToPendingPatients"><p class="has-text-link">List of pending patient profile request ({{totalPendingCount}})</p></a>
+                    </div>
+                    <br>
+                    <div class="w3-row">
+                        <div class="w3-row ">
+                            <div class="w3-col l6">
+                                <strong>Total Number of Patient Profiles:</strong>
+                                {{totalPatientsCount}}
+                            </div>
+                            <div class="w3-col l3">&nbsp</div>
+                            <div class="w3-col l3 w3-right-align">
+                                <div class="field">
+                                    <p class="control has-icons-left">
+                                        <input class="input" type="text" placeholder="Search for a name" v-model="search">
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-search"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class=" w3-row w3-center w3-bottombar w3-topbar w3-border-khaki sticky w3-hide-small"  >
+                            <div class="w3-bar w3-small w3-text-pink">
+                                <a href="#A" class="w3-button">A</a>
+                                <a href="#B" class="w3-button">B</a>
+                                <a href="#C" class="w3-button">C</a>
+                                <a href="#D" class="w3-button">D</a>
+                                <a href="#E" class="w3-button">E</a>
+                                <a href="#F" class="w3-button">F</a>
+                                <a href="#G" class="w3-button">G</a>
+                                <a href="#H" class="w3-button">H</a>
+                                <a href="#I" class="w3-button">I</a>
+                                <a href="#J" class="w3-button">J</a>
+                                <a href="#K" class="w3-button">K</a>
+                                <a href="#L" class="w3-button">L</a>
+                                <a href="#M" class="w3-button">M</a>
+                                <a href="#N" class="w3-button">N</a>
+                                <a href="#O" class="w3-button">O</a>
+                                <a href="#P" class="w3-button">P</a>
+                                <a href="#Q" class="w3-button">Q</a>
+                                <a href="#R" class="w3-button">R</a>
+                                <a href="#S" class="w3-button">S</a>
+                                <a href="#T" class="w3-button">T</a>
+                                <a href="#U" class="w3-button">U</a>
+                                <a href="#V" class="w3-button">V</a>
+                                <a href="#W" class="w3-button">W</a>
+                                <a href="#X" class="w3-button">X</a>
+                                <a href="#Y" class="w3-button">Y</a>
+                                <a href="#Z" class="w3-button">Z</a>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="w3-row  w3-topbar w3-border-yellow w3-center w3-padding-top" v-show="totalPatientsCount < 1">
+                            <i class="fas fa-compact-disc fa-spin w3-text-pink"></i> Loading list of patients. Please be patient... <i class="fas fa-compact-disc fa-spin w3-text-purple"></i>
+                        </div>
+                        
+                        <patients-div
+                            :patients="patients"
+                            :search = "search"
+                            :patients-letter = "patientsLetter"
+                            @select-patient = "selectedPatient"
+                        ></patients-div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib//axios/dist/axios.min.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/components/patients/patientsDiv.js"></script>
+    <script src="../js/components/patients/perLetterPatients.js"></script>
+    <script src="../js/utilities/userAuthentication.js"></script>
+
+    <script src="../js/instances/patients.js"></script>
+
+</body>
+
+</html>

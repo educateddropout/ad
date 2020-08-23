@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - List of Patients</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/modal-fx.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/circle.css">
+
+</head>
+<style type="text/css">
+    .main-body {
+        padding-top: 30px;
+    }
+    .second-body{
+        overflow: hidden;
+        height:1000px;
+    }
+    .padding-top-bottom-0{
+        padding-bottom: 0;
+        padding-top: 0;
+    }
+    input[type="file"]{
+        position: absolute;
+        top: -500px;
+    }
+
+      div.file-listing{
+        width: 200px;
+    }
+
+    span.remove-file{
+        color: red;
+        cursor: pointer;
+        float: right;
+    }
+
+    .border-bottom{
+
+        border-bottom: 1px black;
+    }
+
+</style>
+<body>
+    
+    <div id="patientDentalRecords">
+
+        <header-nav
+            :page-counter= "pageCounter"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+                <nav class="breadcrumb w3-hide-small" aria-label="breadcrumbs">
+                    <br>
+                    <ul>
+                        <li><a href="patients.html">List of Patients</a></li>
+                        <li class="is-active"><a href="#" aria-current="page">Patient Information</a></li>
+                    </ul>
+                </nav>
+
+                <div class="w3-row box is-marginless">
+
+                    <patient-tab-selection
+                        :user-data = "userData"
+                        :current-tab = "currentTab"
+                        :patient-id = "patientId"
+                    ></patient-tab-selection>
+
+                    <div class="w3-row w3-hide-small w3-hide-medium">
+                        <button class="button is-danger" @click="removeDentalRecordWarning" :disabled="updating || editing || selectedRecord == ''"><i class="fas fa-trash-alt" ></i></i> &nbsp Remove Dental Record</button>
+
+                        <button class="button" :class="{'is-dark' : editing, 'is-warning' : !editing}" @click="toggleEditing":disabled="updating || selectedRecord == ''"><i class="fas fa-edit"></i> &nbsp Update Dental Record</button>
+                        <button class="button w3-right" :class="{'is-dark' : updating, 'is-info' : !updating}" @click="toggleUpdating" :disabled="editing"><i class="fas fa-plus-square"></i></i> &nbsp Add Patient Dental Record</button>
+
+                    </div>
+                    <div class="w3-row  w3-hide-large">
+                        <button class="button is-danger" @click="removeDentalRecordWarning" :disabled="updating || editing || selectedRecord == ''"><i class="fas fa-trash-alt" ></i></i></button>
+
+                        <button class="button" :class="{'is-dark' : editing, 'is-warning' : !editing}" @click="toggleEditing":disabled="updating || selectedRecord == ''"><i class="fas fa-edit"></i></button>
+                        <button class="button w3-right" :class="{'is-dark' : updating, 'is-info' : !updating}" @click="toggleUpdating" :disabled="editing"><i class="fas fa-plus-square"></i></i></button>
+                        
+                    </div>
+                    <br>
+                    <div class="w3-row w3-container box" style="overflow-y: scroll">
+                        <div class="w3-cell-row" >
+                            <div class="w3-container w3-cell w3-cell-top">
+                                <br>
+                                <div class="w3-row" v-if="updating || editing">
+                                    <div class="w3-row">
+                                        <div class="w3-col l4"> 
+                                            Dental Record Date:
+                                            <input class="input" :class="{'is-danger' : dentalRecordDate.error != ''}" type="date" placeholder="Rounded input" v-model="dentalRecordDate.value" max="3000-12-31">
+                                            <p class="help is-danger">{{dentalRecordDate.error}}</p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="w3-border-top">
+                                        &nbsp
+                                    </div>
+                                </div>
+                                
+                                <strong>
+                                    <div class="w3-row">
+                                        <p class="w3-center">TOP</p>
+                                    </div>
+                                    <div class="w3-row">
+                                        <span>RIGHT</span>
+                                        <span class="w3-right">LEFT</span>
+                                    </div>
+                                </strong>
+                                <br>
+                                <div class="w3-cell-row">
+                                    <div class="w3-cell w3-border-right w3-border-bottom">
+                                        <dental-record
+                                            :teeth-label = "upperRightTeethLabel"
+                                            :teeth-status = "teethObject.upperRightTeeth"
+                                            :tooth-status-lib = "toothStatusLib"
+                                            :is-upper = "true"
+                                            :updating = "updating"
+                                            :editing = "editing"
+                                        >
+                                        </dental-record>
+                                    </div>
+                                    <div class="w3-cell w3-border-left w3-border-bottom w3-padding-left">
+                                        <dental-record
+                                            :teeth-label = "upperLeftTeethLabel"
+                                            :teeth-status = "teethObject.upperLeftTeeth"
+                                            :tooth-status-lib = "toothStatusLib"
+                                            :is-upper = "true"
+                                            :updating = "updating"
+                                            :editing = "editing"
+                                        >
+                                        </dental-record>
+                                    </div>
+                                </div>
+
+                                <div class="w3-cell-row">
+                                    <div class="w3-cell w3-border-right w3-border-top w3-padding-right">
+                                        <dental-record
+                                            :teeth-label = "lowerRightTeethLabel"
+                                            :teeth-status = "teethObject.lowerRightTeeth"
+                                            :tooth-status-lib = "toothStatusLib"
+                                            :updating = "updating"
+                                            :editing = "editing"
+                                        >
+                                        </dental-record>
+                                    </div>
+                                   <div class="w3-cell w3-border-left w3-border-top w3-padding-left">
+                                        <dental-record
+                                            :teeth-label = "lowerLeftTeethLabel"
+                                            :teeth-status = "teethObject.lowerLeftTeeth"
+                                            :tooth-status-lib = "toothStatusLib"
+                                            :updating = "updating"
+                                            :editing = "editing"
+                                        >
+                                        </dental-record>
+                                    </div>
+                                </div>
+                                <br>
+                                <strong>
+                                    <div class="w3-row">
+                                        <span>RIGHT</span>
+                                        <span class="w3-right">LEFT</span>
+                                    </div>
+                                    <div class="w3-row">
+                                        <p class="w3-center">BOTTOM</p>
+                                    </div>
+                                </strong>
+                                <div class="w3-row" v-show="updating || editing">
+                                    <div class="w3-row">
+                                    <hr>
+                                        <button class="button w3-right is-info is-outlined" @click="saveDentalRecord" v-if="updating"><i class="fas fa-save"></i>&nbsp Save Dental Record</button>
+
+                                        <button class="button w3-right is-info is-outlined" @click="updateDentalRecord" v-if="editing"><i class="fas fa-edit"></i>&nbsp Update Dental Record</button>
+                                    </div>
+                                    <div class="w3-row">
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <modal-message
+                        :is-active = "saveSuccessModal"
+                        :message = "saveSuccessMessage"
+                        :is-loading = "saveSuccessLoading"
+                        :is-confirmation = "isConfirmation"
+                        @close-modal = "closeSaveModal"
+                        @is-confirmed = "removeDentalRecord"
+                    >
+                    </modal-message>
+                    <br>
+                    
+                    <div class="w3-row box">
+
+                        <p v-if="dentalRecords.length == 0">No &nbsp<i class="has-text-danger fas fa-teeth-open"></i>&nbsp dental record saved yet!</p>
+                        <div class="w3-cell-row" v-for="n in Math.ceil(dentalRecords.length/5) ">
+                            <div class="w3-cell " v-for="(dentalRecord,index) in dentalRecords" style="width:20%" v-show="index > ((n-1)*5)-1 && index < (n*5)">
+                                <div class="w3-center w3-border w3-round w3-topbar w3-padding" :class="{'w3-deep-orange' : dentalRecord.id == selectedRecord}" @click="selectRecord(dentalRecord.id)">
+                                    <strong>Record Date : </strong>{{dentalRecord.date_added}}
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <br>
+
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/utilities/getParameters.js"></script>
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/lib/lodash/lodash.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/components/layouts/modalMessage.js"></script>
+    <script src="../js/components/patient/patientDentalRecords/dentalRecord.js"></script>
+    
+    <script src="../js/components/patient/patientTabSelection.js"></script>
+
+    <script src="../js/instances/patientDentalRecords.js"></script>
+    
+    <!--utilities-->
+    <script src="../js/utilities/validationRoutines.js"></script>
+
+</body>
+
+</html>

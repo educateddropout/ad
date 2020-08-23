@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - Libraries</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+
+</head>
+<body>
+    
+    <div id="manageLibraries">
+
+        <header-nav
+            ref="headerNav"
+            :page-counter= "pageCounter"
+            :user-type = "userData.userType"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+
+                <br>
+                <nav class="breadcrumb" aria-label="breadcrumbs">
+                    <ul>
+                        <li><a href="#">Libraries</a></li>
+                    </ul>
+                </nav>
+
+                <div class="w3-row box is-marginless">
+                    <div class="w3-row">
+                        <div class="w3-row ">
+                            <div class="w3-col l6 is-size-4">
+                                <strong>Payment Type</strong>
+                            </div>
+                            <div class="w3-col l3">&nbsp</div>
+                        </div>
+
+                    </div>
+                    <hr>
+                    <div class="w3-row ">
+                       <div class="w3-col l1">&nbsp</div>
+                       <div class="w3-col l10">
+                            <div class="w3-row">
+                                <a class="button w3-right is-info is-outlined" @click="togglePaymentTypeBox">Add Payment Type</a>
+                            </div>
+                            <div class="w3-row w3-container box" v-show="isOpenAddPaymentTypeBox">
+                                <div class="w3-col l5 w3-padding">
+                                    <div class="w3-row">
+                                        <label><strong>Name:</strong></label>
+                                    </div>
+                                    <div class="w3-row">
+                                        <input class="input" type="text" placeholder="Enter Payment Type" v-model="paymentTypeName.value" maxlength="20" :class="{'is-danger' : paymentTypeName.error != ''}" @keyup="paymentTypeName.value = paymentTypeName.value.toUpperCase()">
+                                        <p class="help is-danger">{{paymentTypeName.error}}</p>
+                                    </div>
+                                </div>
+                                <div class="w3-col l5 w3-padding">
+                                    <div class="w3-row">
+                                        <label><strong>Percentage:</strong></label>
+                                    </div>
+                                    <div class="w3-row">
+                                        <div class="field has-addons" >
+                                            <p class="control" >
+                                                <input class="input" type="text" placeholder="Enter Percentage" v-model="paymentTypePercentage.value" maxlength="5" :class="{'is-danger' : paymentTypePercentage.error != ''}">
+                                            </p>
+                                            <p class="control ">
+                                                <a class="button is-static w3-border" :class="{'w3-border-red' : paymentTypePercentage.error != ''}">
+                                                    %
+                                                </a>
+                                            </p>
+                                        </div>
+                                        <p class="help is-danger">{{paymentTypePercentage.error}}</p>
+                                    </div>
+                                </div>
+                                <div class="w3-col l2 w3-padding">
+                                    <div class="w3-row">
+                                        <label><strong>&nbsp</strong></label>
+                                    </div>
+                                    <div class="w3-row">
+                                        <button class="button w3-right is-success" @click="addPaymentType"><i class="fas fa-save"></i></i>&nbspSave</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                       </div>
+                       <div class="w3-col l1">&nbsp</div>
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-col l1">&nbsp</div>
+                        <div class="w3-col l10">
+                            <table class="table is-striped is-narrow is-hoverable is-fullwidth w3-border">
+                                <thead class="has-background-dark ">
+                                    <tr >
+                                        <th class="has-text-white">#</th>
+                                        <th class="has-text-white">Name</th>
+                                        <th class="has-text-white">Percentage</th>
+                                        <th class="w3-center has-text-white">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(paymentType,index) in paymentTypes">
+                                        <th>{{index+1}}</th>
+                                        <td>
+                                            <span v-if="!paymentType.forEdit">{{paymentType.name}}</span>
+                                            <span class=" has-text-danger pointer" v-else="">
+                                                <input class="input" type="text" placeholder="Enter Payment Type" v-model="paymentType.name" maxlength="20" :class="{'is-danger' : paymentType.nameError != ''}" @keyup="paymentType.name = paymentType.name.toUpperCase()">
+                                                <p class="help is-danger">{{paymentType.nameError}}</p>
+                                            </span>
+                                        </td>
+                                        <td class="">
+                                            <span v-if="!paymentType.forEdit">{{paymentType.percentage}}%</span>
+                                            <span class=" has-text-danger pointer" v-else="">
+                                                
+                                                <div class="field has-addons">
+                                                    <p class="control">
+                                                        <input class="input" type="text" placeholder="Enter 
+                                                        Percentage" v-model="paymentType.percentage" maxlength="5" :class="{'is-danger' : paymentType.percentageError != ''}" >
+                                                    </p>
+                                                    <p class="control">
+                                                        <a class="button is-static">
+                                                            %
+                                                        </a>
+                                                    </p>
+                                                    <p class="help is-danger">{{paymentType.percentageError}}</p>
+                                                </div>
+
+                                            </span>
+                                        </td>
+                                        <td class="w3-center is-size-4">
+                                            <span class=" has-text-info pointer" v-if="!paymentType.forEdit" @click="updateForEditToTrue(index)">
+                                                <i class="far fa-edit"></i>
+                                            </span> 
+                                            <span class=" has-text-success pointer" v-else="" @click="saveChanges(index)">
+                                                <i class="far fa-save"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                        <div class="w3-col l1">&nbsp</div>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/components/patients/patientsDiv.js"></script>
+    <script src="../js/components/patients/perLetterPatients.js"></script>
+    <script src="../js/utilities/userAuthentication.js"></script>
+    <script src="../js/instances/manageLibraries.js"></script>
+
+</body>
+
+</html>

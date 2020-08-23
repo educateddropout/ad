@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - List of Pending Patients Records</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+</head>
+<body>
+    
+    <div id="pendingPatients">
+
+        <header-nav
+            ref="headerNav"
+            :page-counter= "pageCounter"
+            :user-type = "userData.userType"
+            @send-total-pending-count = "updateTotalPendingCount"
+        ></header-nav>
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+                <nav class="breadcrumb" aria-label="breadcrumbs">
+                    <br>
+                    <ul>
+                        <li><a href="patients.html">List of Patients</a></li>
+                        <li class="is-active"><a href="#" aria-current="page">Pending Patients Request</a></li>
+                    </ul>
+                </nav>
+
+                <div class="w3-row box is-marginless">
+                    <div class="w3-row">
+                        <div class="w3-row ">
+                            <div class="w3-col l6">
+                                <strong>Total Number of Pending Patient Information:</strong>
+                                {{totalPendingCount}}
+                            </div>
+                            <div class="w3-col l3">&nbsp</div>
+                            <div class="w3-col l3 w3-right-align">
+                                <div class="field">
+                                    <p class="control has-icons-left">
+                                        <input class="input" type="text" placeholder="Search for a name" v-model="search">
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-search"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                    </div>
+                    <hr>
+                    <div class="w3-row">
+                        <div class="w3-col l1">&nbsp</div>
+                        <div class="w3-col l10" style="overflow-x:auto;">
+                            <table class="table is-striped is-narrow is-hoverable is-fullwidth" >
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th class="w3-center">Approve</th>
+                                        <th class="w3-center">Disapprove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(patient,index) in patients">
+                                        <th>{{index+1}}</th>
+                                        <td>
+                                            {{fullName(patient.first_name, patient.middle_name, patient.last_name)}}
+                                        </td>
+                                        <td>{{patient.address}}</td>
+                                        <td class="w3-center w3-border-right">
+                                            <span class=" has-text-success pointer" @click="approvedPendingPatient(patient.id)">
+                                                <i class="fas fa-thumbs-up"></i> &nbsp
+                                            </span>
+                                        </td>
+                                        <td class="w3-center">
+                                            <span class=" has-text-danger pointer" @click="disApprovedPendingPatient(patient.id)">
+                                                &nbsp <i class="fas fa-thumbs-down"></i> 
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                        <div class="w3-col l1">&nbsp</div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/components/patients/patientsDiv.js"></script>
+    <script src="../js/components/patients/perLetterPatients.js"></script>
+    <script src="../js/utilities/userAuthentication.js"></script>
+
+    <script src="../js/instances/pendingPatientRecords.js"></script>
+
+</body>
+
+</html>

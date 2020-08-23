@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - List of Patients</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/login.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+    <style>
+        .mySlides {display:none}
+        .block {display:block}
+        .dentalImage { 
+            width:100%; 
+            height: 220px;
+            cursor: pointer;
+        }
+        .dentalImageSmall { 
+            width:100%; 
+            height: 130px;
+            cursor: pointer;
+        }
+        .activeModal { display:block; }
+    </style>
+</head>
+<body>
+    
+    <div id="patientDentalPictures">
+
+        <header-nav
+            :page-counter= "pageCounter"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+                <nav class="breadcrumb w3-hide-small" aria-label="breadcrumbs">
+                    <ul>
+                        <li><a href="patients.html">List of Patients</a></li>
+                        <li class="is-active"><a href="#" aria-current="page">Patient Information</a></li>
+                    </ul>
+                </nav>
+
+                <div class="w3-row box is-marginless">
+
+                    <patient-tab-selection
+                        :user-data = "userData"
+                        :current-tab = "currentTab"
+                        :patient-id = "patientId"
+                    ></patient-tab-selection>
+                    <br>
+                    <div class="w3-row w3-center" v-if="true">
+                        <div class="file-upload-form w3-hide">
+                            <input type="file" id="file" ref="file" single v-on:change="handleFileUpload()" />
+                        </div>
+                        <button class="button is-outlined is-info" @click="changeDentalPicture()"><i class="fas fa-plus-square"></i> &nbsp Add Dental Picture</button>&nbsp&nbsp
+                        <button class="button is-outlined is-info" @click="submitDentalPicture()">Submit</button>
+            
+                    </div>
+                    <br>
+                    <div class="w3-row w3-center " v-if="file != ''">
+                        <li>{{ file.name }} </li>
+                        <br>
+                        <div class="w3-row">
+                            <div class='w3-col l4'>&nbsp</div>
+                            <div class='w3-col l4'>
+                                <div class="w3-row w3-left-align"><strong>Date taken:</strong></div>
+                                <div class="w3-row ">
+                                    <input type="date"  class="input" :class="{'is-danger' : dateTaken.error != ''}" v-model="dateTaken.value">
+                                    <p class="help is-danger w3-left-align">{{dateTaken.error}}</p>
+                                </div>
+                            </div>
+                            <div class='w3-col l4'>&nbsp</div>
+                        </div>
+                    </div>
+
+                    <div class="w3-row box">
+                        <p v-if="dentalImages.length == 0">No &nbsp<i class="has-text-danger fas fa-teeth-open"></i>&nbsp dental image saved yet!</p>
+                        <div class="w3-cell-row w3-hide-small w3-hide-medium" v-for="n in Math.ceil(dentalImages.length/4) ">
+                            <div class="w3-cell " v-for="(dentalRecord,index) in dentalImages" style="width:20%" v-show="index > ((n-1)*4)-1 && index < (n*4)">
+                                <div class="w3-center w3-padding">
+                                    <div class="w3-card" @click="openTeethViewer(index)">
+                                        <img :src="dentalRecord.file_directory" class="dentalImage w3-hover-shadow" alt="Teeth" style="">
+                                        <div class="w3-container">
+                                            <b>Date Taken:</b>
+                                            <p>{{dentalRecord.date_taken}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w3-center w3-padding" v-show="userData.userType == 3">
+                                    <span class="has-text-danger w3-border-bottom pointer" @click="deleteFile(dentalRecord.id, dentalRecord.file_directory)"><i class="fas fa-trash-alt"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="w3-cell-row w3-hide-large" v-for="n in Math.ceil(dentalImages.length/2) ">
+                            <div class="w3-cell " v-for="(dentalRecord,index) in dentalImages" style="width:50%" v-show="index > ((n-1)*2)-1 && index < (n*2)">
+                                <div class="w3-center w3-padding">
+                                    <div class="w3-card" @click="openTeethViewer(index)">
+                                        <img :src="dentalRecord.file_directory" alt="Teeth" style="width:100%; height: 150px">
+                                        <div class="w3-container">
+                                            <b>Date Taken:</b>
+                                            <p>{{dentalRecord.date_taken}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w3-center w3-padding">
+                                    <span class="has-text-danger w3-border-bottom pointer" @click="deleteFile(dentalRecord.id, dentalRecord.file_directory)"><i class="fas fa-trash-alt"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="w3-modal w3-black" :class="{activeModal : isOpenTeethViewer}">
+                        
+                        <div class="w3-modal-content">
+                            
+                            <div class="w3-content w3-black" style="max-width:1200px">
+                                <div class="w3-row">
+
+                                    <span class="w3-text-white w3-xlarge w3-hover-text-grey w3-right" @click="closeTeethViewer" style="cursor:pointer">×</span>
+
+                                </div>
+                                <img  v-for="(dentalRecord,index) in dentalImages" class="has-background-black w3-hide-small w3-hide-medium" :class="{block : index == selectedSlide, mySlides : index != selectedSlide}":src="dentalRecord.file_directory" style="width:100%;height: 450px" >
+
+                                <img  v-for="(dentalRecord,index) in dentalImages" class="has-background-black w3-hide-large" :class="{block : index == selectedSlide, mySlides : index != selectedSlide}":src="dentalRecord.file_directory" style="width:100%;height: 300px" >
+
+                                <div class="w3-row w3-black w3-center">
+                                    <div class="w3-display-container">
+                                        <p class="w3-padding" id="caption">{{caption}}</p>
+                                        <span class="w3-display-left w3-btn" @click="deductSelectedSlide">❮</span>
+                                        <span class="w3-display-right w3-btn" @click="addSelectedSlide">❯</span>
+                                    </div>
+
+                                    <div class="w3-col s4" v-for="(dentalRecord,index) in dentalImages">
+
+                                        <img class="w3-padding demo w3-hide-small w3-hide-medium dentalImage w3-opacity w3-hover-opacity-off"  :src="dentalRecord.file_directory" style="width:100%" :class="{'w3-opacity-off' : index == selectedSlide}" @click="changeDisplay(index)" :alt="dentalRecord.date_taken">
+
+                                        <img class="w3-padding demo w3-hide-large w3-opacity w3-hover-opacity-off dentalImageSmall"  :src="dentalRecord.file_directory" style="width:100%" :class="{'w3-opacity-off' : index == selectedSlide}" @click="changeDisplay(index)" :alt="dentalRecord.date_taken">
+
+                                    </div>
+
+                                </div> <!-- End row -->
+                            </div> <!-- End w3-content -->
+
+                        </div> <!-- End modal content -->
+                    </div> <!-- End modal -->
+
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+            <modal-message
+                :is-active = "showDeleteWarningMessage"
+                :message = "deletedMessage"
+                :is-confirmation = "true"
+                
+                @close-modal = "closeDeleteWarningMessage"
+                @is-confirmed = "deleteImage"
+            >
+            </modal-message>
+        </div>
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/utilities/getParameters.js"></script>
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib//axios/dist/axios.min.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/components/patient/patientTabSelection.js"></script>
+    
+    <script src="../js/components/layouts/modalMessage.js"></script>
+
+    <script src="../js/instances/patientDentalPictures.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - List of Patients</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/login.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+    <style>
+        .mySlides {display:none}
+        .block {display:block}
+        .dentalImage { 
+            width:100%; 
+            height: 220px;
+            cursor: pointer;
+        }
+        .dentalImageSmall { 
+            width:100%; 
+            height: 130px;
+            cursor: pointer;
+        }
+        .activeModal { display:block; }
+        .pointer {cursor: pointer;}
+    </style>
+</head>
+<body>
+    
+    <div id="patientDentalPictures">
+
+        <header-nav
+            :page-counter= "pageCounter"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+                <nav class="breadcrumb w3-hide-small" aria-label="breadcrumbs">
+                    <ul>
+                        <li><a href="patients.html">List of Patients</a></li>
+                        <li class="is-active"><a href="#" aria-current="page">Patient Information</a></li>
+                    </ul>
+                </nav>
+
+                <div class="w3-row box is-marginless">
+
+                    <patient-tab-selection
+                        :user-data = "userData"
+                        :current-tab = "currentTab"
+                        :patient-id = "patientId"
+                    ></patient-tab-selection>
+                    <br>
+                    <div class="w3-row w3-center" v-if="true">
+                        <div class="file-upload-form w3-hide">
+                            <input type="file" id="file" ref="file" single v-on:change="handleFileUpload()" />
+                        </div>
+                        <button class="button is-outlined is-info" @click="changeDentalPicture()"><i class="far fa-file-pdf"></i> &nbsp Add PDF File</button>&nbsp&nbsp
+                        <button class="button is-outlined is-info" @click="submitDentalPicture()">Submit</button>
+            
+                    </div>
+                    <br>
+                    <div class="w3-row w3-center " v-if="file != ''">
+                        <li>{{ file.name }} </li>
+                        <br>
+                        <div class="w3-row">
+                            <div class='w3-col l4'>&nbsp</div>
+                            <div class='w3-col l4'>
+                                <div class="w3-row w3-left-align"><strong>Description:</strong></div>
+                                <div class="w3-row ">
+                                    <input type="text"  class="input" :class="{'is-danger' : pdfFileName.error != ''}" v-model="pdfFileName.value" maxlength="100">
+                                    <p class="help is-danger w3-left-align">{{pdfFileName.error}}</p>
+                                </div>
+                            </div>
+                            <div class='w3-col l4'>&nbsp</div>
+                        </div>
+                    </div>
+
+                    <div class="w3-row box">
+                        <div class="w3-row">
+                            <div class="w3-col l1">&nbsp</div>
+                            <div class="w3-col l10">
+                                <table class="table is-bordered is-striped is-fullwidth">
+                                    <thead class="has-background-info">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Decription</th>
+                                            <th>Date Uploaded</th>
+                                            <th class="w3-center"  v-if="userData.userType == 3">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                         <tr v-for="(file,index) in dentalFiles">
+                                            <th>{{index+1}}</th>
+                                            <td><span class="pointer has-text-link" @click="goToPdf(file.file_directory)"><u>{{file.pdf_file_name}}</u></span></td>
+                                            <td>{{file.date_added}}</td>
+                                            <td class="w3-center" v-if="userData.userType == 3"><span class="has-text-danger pointer" @click="deleteFile(file.id, file.file_directory)"><i class="fas fa-trash-alt"></i></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="w3-col l1">&nbsp</div>
+                        </div>
+                    </div>
+                    
+                    <modal-message
+                        :is-active = "showDeleteWarningMessage"
+                        :message = "deletedMessage"
+                        :is-confirmation = "true"
+                        
+                        @close-modal = "closeDeleteWarningMessage"
+                        @is-confirmed = "deletePdf"
+                    >
+                    </modal-message>
+                    
+
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/utilities/getParameters.js"></script>
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib//axios/dist/axios.min.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/components/patient/patientTabSelection.js"></script>
+    <script src="../js/components/layouts/modalMessage.js"></script>
+    <script src="../js/instances/patientDentalOtherInfo.js"></script>
+
+</body>
+
+</html>

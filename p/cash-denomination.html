@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - Daily Cash Denominations</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free-5.7.2-web/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+</head>
+<style>
+html, body {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    height: 100%;
+}
+</style>
+<body>
+    
+    <div id="cashDenomination">
+
+        <header-nav
+            :page-counter= "pageCounter"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+                <br>
+                <div class="w3-row box is-marginless">
+                    
+                    <div class="w3-row">
+                        <div class="w3-col l3"> &nbsp </div>
+                        <div class="w3-col l6 " >
+                            <div class="w3-row w3-bottombar w3-center">
+                                <strong>
+                                <div class="w3-row w3-xxlarge">
+                                    <span v-text="selectedDate.monthName"></span>
+                                    <span v-text="selectedDate.day"></span>,
+                                    <span v-text="selectedDate.year"></span>
+                                </div>
+                                <div class="w3-row w3-xlarge ">
+                                    <span class="has-text-info" v-text="selectedDate.dayName"></span>
+                                </div>
+                                </strong>
+                                <br>
+                            </div>
+                            <div class="w3-row w3-bottombar w3-center w3-padding w3-xlarge">
+                                CASH BREAKDOWN
+                            </div>
+                            <div class="w3-row">
+                                <div class="table-container">
+                                    <table class="table is-bordered is-striped is-narrow is-fullwidth">
+                                        <thead>
+                                            <tr>
+                                                <th>DENOMINATION</th>
+                                                <th>NO OF PCS</th>
+                                                <th class="w3-center">AMOUNT</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(cash,index) in cashDenomination">
+                                                <td class="w3-center"><strong>{{cash.label}}</strong></td>
+                                                <td class="w3-center">
+                                                    <input class="input" type="text" v-model="cash.pieces" maxlength="5" @change="changeDenomination(index)" :class="{'is-danger' : cash.error != ''}">
+                                                    <label class="help is-danger">{{cash.error}}</label>
+                                                </td>
+                                                <td>{{computeAmount(cash.pieces,cash.label)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="has-text-right w3-large" colspan="2"><strong>TOTAL CASH</strong></td>
+                                                <td class="w3-large" v-text="totalCash"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w3-col l3"> &nbsp </div>
+                    </div>
+                    <modal-message
+                        :is-active = "showModal"
+                        :message = "modalMessage"
+                        :is-loading = "true"
+                    >
+                    </modal-message>
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/moment/min/moment.min.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+
+
+    <script src="../js/components/reports/miscExpenses/datesSelection.js"></script>
+    <script src="../js/components/reports/miscExpenses/miscTable.js"></script>
+    <script src="../js/components/reports/miscExpenses/miscExpensesModal.js"></script>
+    <script src="../js/components/layouts/modalMessage.js"></script>
+
+    <script src="../js/instances/cashDenomination.js"></script>
+
+</body>
+
+</html>

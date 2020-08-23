@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - Dashboard/Home</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+    
+</head>
+<body>
+    
+    <div id="dashboard">
+        
+        <header-nav
+            :page-counter= "pageCounter"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <br>
+        <div class="w3-row">
+            <div class="w3-col l1"> &nbsp </div>
+            <div class="w3-col l10">
+                <section class="hero is-info welcome is-small">
+                    <div class="hero-body">
+                        <div class="container">
+
+                            <h1 class="title">
+                                Hello, {{userData.userName}}
+                            </h1>
+                            <h2 class="subtitle has-text-dark">
+                                I hope you are having a great day!
+                            </h2>
+
+                        </div>
+                    </div>
+                </section>
+                <br>
+                <section class="info-tiles">
+                    <div class="tile is-ancestor has-text-centered">
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title">{{totalPatientsCount}}</p>
+                                <p class="subtitle">Registered Patients</p>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title">{{totalTreatmentsCount}}</p>
+                                <p class="subtitle">Treatments Attended</p>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+                <br>
+                <div class="w3-row" v-show="userData.isDentist == 1 ">
+                    
+                    <div class="card" v-if="hasSchedule">
+
+                        <header class="card-header has-background-info">
+                            <p class="card-header-title ">
+                                Your todays schedule
+                            </p>
+                            <a href="#" class="card-header-icon" aria-label="more options">
+                                <span class="icon">
+                                    <i class="fas fa-calendar"></i>
+                                </span>
+                            </a>
+                        </header>
+                        
+                        <div class="card-table">
+                            <div class="content">
+                                <div class="w3-row">
+                                    <div class="w3-col l1">&nbsp</div>
+                                    <div class="w3-col l10">&nbsp
+                                        <table class="table w3-border is-fullwidth is-striped">
+                                            <thead class="has-background-dark ">
+                                                <tr >
+                                                    <th class="has-text-white-ter"><i class="fas fa-clock"></i> &nbspTime</th>
+                                                    <th class="has-text-white-ter">Schedule Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(timeSchedule,index1) in timeSchedulesLibrary">
+                                                    <th class="w3-border-right">{{timeSchedule.name}}</th>
+                                                    <td class="w3-border-right" 
+                                                        v-for="s in scheduleLibrary[0].result2" 
+                                                        v-if="s.rowOrigin == index1" :rowspan="s.row" 
+                                                        :class="{'w3-pale-green': s.detail != '' && schedDetail(s.detail,4) == undefined,
+                                                                    'w3-pale-red': s.detail != '' && schedDetail(s.detail,4) != undefined }"
+                                                        @click="cancelSchedule(s.detail,s.timeStarted,s.timeEnded, index2)">
+                                                        
+                                                        <div class="w3-row w3-center" v-if="s.detail != ''">
+                                                            <div class="w3-row w3-text-deep-orange"><b>{{s.timeStarted}} - {{s.timeEnded}}</b></div>
+                                                            <br>
+                                                            <div class="w3-row">
+                                                                <b>
+                                                                    Patient Name: 
+                                                                    
+                                                                </b> <span>{{schedDetail(s.detail,0)}}</span> 
+                                                                    | 
+                                                                <b>
+                                                                    <span class="w3-text-blue" v-if="schedDetail(s.detail,3) == 'N'">NEW</span>
+                                                                    <span class="w3-text-yellow" v-else="">OLD</span>
+                                                                </b>
+                                                            </div>
+                                                            <div class="w3-row">
+                                                                <b>Contact Number:</b> <span>{{schedDetail(s.detail,1)}}</span> 
+                                                            </div>
+
+                                                            <div class="w3-row">
+                                                                <b>Procedure/Treatment:</b> <span>{{schedDetail(s.detail,2)}}</span> 
+                                                            </div>
+                                                            <br>
+                                                            <div class="w3-row has-text-danger" v-if="schedDetail(s.detail,4) != undefined">
+                                                                <b>Reason of Cancellation: </b><span>{{schedDetail(s.detail,4)}}</span> 
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                <tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="w3-col l1">&nbsp</div>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="card-footer has-text-info">
+                            <a href="schedules.html" class="card-footer-item">View All Schedule</a>
+                        </footer>
+
+                    </div>
+
+                    <div class="card" v-else>
+                        No schedule for today. &nbsp <i class="fas fa-glass-cheers has-text-warning"></i> &nbsp Cheers!
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="w3-col l1"> &nbsp </div>
+        </div>
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/lib/moment/min/moment.min.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/instances/dashboard.js"></script>
+    
+
+</body>
+
+</html>

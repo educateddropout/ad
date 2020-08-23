@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - Payment Records</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free-5.7.2-web/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+</head>
+<style type="text/css">
+</style>
+<body>
+    
+    <div id="schedules" >
+
+         <header-nav
+            :page-counter= "pageCounter"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <div class="w3-row" >
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+                <br>
+                <div class="w3-row box is-marginless">
+                    <div class="w3-row">
+                        <div class="w3-col l1">&nbsp</div>
+                        <div class="w3-col l10">
+                            <div class="w3-cell-row w3-topbar w3-bottombar w3-hide-large w3-center">
+                              <span class="w3-large">{{today.month}}</span>&nbsp
+                              <span class="w3-xlarge"><b>{{today.date}}</b></span>,
+                              <span class="w3-large">{{today.year}}</span>
+                            </div>
+                            <br>
+                            <div clas="row">
+                                <div class="columns">
+                                    <div class="column is-3">
+                                        <input class="input" type="date" v-model="selectedDate" @change="selectDate()">
+                                        <p class="help">Select date to view schedule</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                            <br>
+                            <div class="w3-cell-row w3-border w3-hide-small w3-hide-medium">
+
+                                <div class="w3-container  w3-cell w3-cell-middle w3-border  w3-center" @click="clickedDate(dayBeforeYesterday.completeDate)">
+                                  <p class="w3-large" v-text="dayBeforeYesterday.month"></p>
+                                  <p class="w3-xxlarge" v-text="dayBeforeYesterday.date"></p>
+                                  <p class="w3-large" v-text="dayBeforeYesterday.year"></p>
+                                  <p class="w3-medium w3-text-indigo" v-text="dayBeforeYesterday.weekday"></p>
+                                </div>
+
+                                <div class="w3-container  w3-cell w3-cell-middle w3-border w3-center" @click="clickedDate(yesterday.completeDate)">
+                                  <p class="w3-large" v-text="yesterday.month"></p>
+                                  <p class="w3-xxlarge" v-text="yesterday.date"></p>
+                                  <p class="w3-large" v-text="yesterday.year"></p>
+                                  <p class="w3-medium w3-text-indigo" v-text="yesterday.weekday"></p>
+                                </div>
+
+                                <div class="w3-container  w3-pale-blue w3-cell w3-border-blue-gray w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-center"><strong>
+                                  <p class="w3-xlarge" v-text="today.month"></p>
+                                  <p class="w3-xxxlarge" v-text="today.date"></p>
+                                  <p class="w3-xlarge" v-text="today.year"></p>
+                                  <p class="w3-large w3-text-indigo" v-text="today.weekday"></p></strong>
+                                </div>
+
+                                <div class="w3-container  w3-cell w3-cell-middle w3-border w3-center" @click="clickedDate(tomorrow.completeDate)">
+                                  <p class="w3-large" v-text="tomorrow.month"></p>
+                                  <p class="w3-xxlarge" v-text="tomorrow.date"></p>
+                                  <p class="w3-large" v-text="tomorrow.year"></p>
+                                  <p class="w3-medium w3-text-indigo" v-text="tomorrow.weekday"></p>
+                                </div>
+
+                                <div class="w3-container  w3-cell w3-cell-middle w3-border  w3-center" @click="clickedDate(dayAfterTomorrow.completeDate)">
+                                  <p class="w3-large" v-text="dayAfterTomorrow.month"></p>
+                                  <p class="w3-xxlarge" v-text="dayAfterTomorrow.date"></p>
+                                  <p class="w3-large" v-text="dayAfterTomorrow.year"></p>
+                                  <p class="w3-medium w3-text-indigo" v-text="dayAfterTomorrow.weekday"></p>
+                                </div>
+
+                            </div>
+                            
+                            <br>
+
+                            <schedules-table
+
+                                :user-data = "userData"
+                                :dentists-library = "dentistsLibrary"
+                                :time-schedules-library = "timeSchedulesLibrary"
+                                :schedules-library = "schedulesLibrary"
+                                :date-schedule = "today.completeDate"
+                                :patients-library = "patientsLibrary"
+                                @update-schedule = "fetchSchedulesOnSelectedDate"
+
+                            ></schedules-table>
+
+                        </div>
+                        <div class="w3-col l1">&nbsp</div>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/utilities/getParameters.js"></script>
+    <script src="../js/utilities/validationRoutineReports.js"></script>
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/moment/min/moment.min.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/lib/vue-select/dist/vue-select.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/components/layouts/modalMessage.js"></script>
+    <script src="../js/components/layouts/modalCancel.js"></script>
+
+
+
+    <script src="../js/components/schedules/addScheduleModal.js"></script>
+    <script src="../js/components/schedules/schedulesTable.js"></script>
+
+    <script src="../js/instances/schedules.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - Users</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+
+</head>
+<body>
+    
+    <div id="manageUsers">
+
+        <header-nav
+            ref="headerNav"
+            :page-counter= "pageCounter"
+            :user-type = "userData.userType"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10" >
+
+                <br>
+                <nav class="breadcrumb" aria-label="breadcrumbs">
+                    <ul>
+                        <li><a href="#">Users</a></li>
+                    </ul>
+                </nav>
+
+                <div class="w3-row box is-marginless" style="overflow-x: auto;">
+                    <div class="w3-row">
+                        <div class="w3-row ">
+                            <div class="w3-col l6 is-size-4">
+                                <strong><i class="fas fa-users"></i> Manage Users</strong>
+                            </div>
+                            <div class="w3-col l3">&nbsp</div>
+                        </div>
+
+                    </div>
+                    <hr>
+                    
+                    <!-- Pending -->
+                    
+                    <div class="w3-row">
+                        <div class="w3-col l1">&nbsp</div>
+                        <div class="w3-col l10">
+                            <a class="button is-dark is-outlined " @click="togglePendingTable">
+                                {{showPendingUserButtonText}} &nbsp<span v-show="pendingListOfUser.length > 0">({{pendingListOfUser.length}})</span>
+                            </a>
+                            <table class="table is-striped is-narrow is-hoverable is-fullwidth w3-border" v-show="showPendingUsers">
+                                <thead class="has-background-dark ">
+                                    <tr >
+                                        <th class="has-text-white">#</th>
+                                        <th class="has-text-white">Name</th>
+                                        <th class="has-text-white">Username</th>
+                                        <th class="has-text-white">&nbsp</th>
+
+                                        <th colspan="2" class="has-text-white w3-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(user,index) in pendingListOfUser">
+                                        <th>{{index+1}}</th>
+                                        <td>
+                                            <span v-if="user.user_type == 3" class="w3-text-deep-orange">&nbsp <i class="fas fa-crown"></i></span><span > &nbsp {{user.name}}</span>
+                                        </td>
+                                        <td>
+                                            <span >{{user.username}}</span>
+                                        </td>
+                                        <td class="">
+                                            <span class="has-text-success" v-if="user.is_dentist == 1"><i class="fas fa-user-md fa-2x"></i></span>
+                                            <span class="has-text-info" v-else=""><i class="fas fa-user-cog fa-2x"></i></span>                       
+                                        </td>
+
+                                        <td  class="w3-center w3-border-left" >
+
+                                            <a class="button is-outlined is-success has-text-dark" @click="approveUser(index)"> <i class="fas fa-thumbs-up"></i> &nbsp Approve</a>
+
+                                        </td>
+
+                                        <td  class="w3-center w3-border-left" >
+
+                                            <a class="button is-outlined is-dark has-text-danger" @click="disApproveUser(index)"> <i class="fas fa-ban"></i> &nbsp Decline</a>
+
+                                        </td>
+                                        
+                                    </tr>
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                        <div class="w3-col l1">&nbsp</div>
+                    </div>
+
+                    <br><br>
+
+                    <div class="w3-row">
+                        <div class="w3-col l1">&nbsp</div>
+                        <div class="w3-col l10" >
+                            <table class="table is-striped is-narrow is-hoverable is-fullwidth w3-border">
+                                <thead class="has-background-dark ">
+                                    <tr >
+                                        <th class="has-text-white">#</th>
+                                        <th class="has-text-white">Name</th>
+                                        <th class="has-text-white">Username</th>
+                                        <th class="has-text-white">&nbsp</th>
+                                        <th class="has-text-white" v-if="userData.userType == 3">&nbsp</th>
+                                        <th class="has-text-white w3-center">Reset Password</th>
+                                        <th class="has-text-white w3-center">Lock/Unlock account</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(user,index) in activeLockedListOfUser">
+                                        <th>{{index+1}}</th>
+                                        <td>
+                                            <span v-if="user.user_type == 3" class="w3-text-deep-orange">&nbsp <i class="fas fa-crown"></i></span><span > &nbsp {{user.name}}</span>
+                                        </td>
+                                        <td>
+                                            <span >{{user.username}}</span>
+                                        </td>
+                                        <td class="">
+                                            <span class="has-text-success" v-if="user.is_dentist == 1"><i class="fas fa-user-md fa-2x"></i></span>
+                                            <span class="has-text-info" v-else=""><i class="fas fa-user-cog fa-2x"></i></span>                       
+                                        </td>
+
+                                        <td  class="w3-center w3-border-left" v-if="userData.userType == 3 ">
+                                            <a class="button is-black is-outlined" v-if="user.user_type != 3" @click="promoteUser(index)">Promote &nbsp <i class="far fa-star has-text-warning"></i></a>
+
+                                            <a class="button is-black is-outlined" v-else="" @click="demoteUser(index)">Demote &nbsp&nbsp&nbsp <i class="fas fa-angle-double-down has-text-warning"></i>&nbsp</a>
+
+                                        </td>
+
+                                        <td  class="w3-center w3-border-left" >
+
+                                            <a class="button is-warning has-text-black is-outlined" @click="resetUserPassword(index)"><i class="fas fa-redo"></i></a>
+
+                                        </td>
+
+                                        <td  class="w3-center w3-border-left" >
+
+                                            <a class="button is-outlined is-dark has-text-warning" v-if="user.archive == 0" @click="lockUser(index)"><i class="fas fa-lock"></i></a>
+
+                                            <a class="button is-outlined is-warning has-text-dark" v-else-if="user.archive == 1"><i class="fas fa-unlock" @click="unlockUser(index)"></i></a>
+
+                                        </td>
+                                        
+                                    </tr>
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                        <div class="w3-col l1">&nbsp</div>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+        <modal-message
+            :is-active = "showModal"
+            :message = "modalMessage"
+            :is-loading = "modalLoadingCtr"
+            @close-modal = "closeModal"
+        >
+        </modal-message>
+
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/components/layouts/modalMessage.js"></script>
+    <script src="../js/utilities/userAuthentication.js"></script>
+    <script src="../js/instances/manageUsers.js"></script>
+
+</body>
+
+</html>

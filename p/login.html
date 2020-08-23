@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - Login</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/login.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+</head>
+<body >
+    <div id="login">
+        <modal-message-warning
+            :is-active = "showForgotPasswordMessage"
+            :message = "showForgotPasswordWarningMessage"
+            @close-modal = "closeForgotPasswordMessage"
+        >
+        </modal-message-warning>
+        <section class="hero is-success is-fullheight">
+            <div class="hero-body" >
+
+                <div class="container has-text-centered">
+                    <div class="column is-4 is-offset-4">
+                        <img src="../assets/images/ad_logo.png">
+                        <div class="box">
+                            <figure class="avatar">
+                                <img src="../assets/images/avatar.jpg">
+                            </figure>
+                                <strong><span class="has-text-danger" v-text="loginErrorMessage"></span></strong>
+                                <br>
+                                <br>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input is-large" type="text" placeholder="Your Username" autofocus="" v-model="username" required>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input is-large" type="password" placeholder="Your Password" v-model="password" @keyup.enter="onSubmit" required>
+                                    </div>
+                                </div>
+                                <br>
+                                <button class="button is-block is-info is-large is-fullwidth" @click="onSubmit()">Login</button>
+                            
+                        </div>
+                        <p class="ad-text-color">
+                            <a href="register-user.html">Sign Up</a> &nbsp;·&nbsp;
+                            <a @click="openForgotPasswordMessage">Forgot Password</a> &nbsp;·&nbsp;
+                            <a href="register.html">Register a Patient?</a>
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    <!-- script frame -->
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/components/layouts/modalMessageWarning.js"></script>
+    <script src="../js/instances/login.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+#menu {
+  
+  position: relative;
+  width: 36px;
+  height: 36px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 50px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border:1px solid black;   
+}
+
+.center {
+  position: absolute;
+  left: 8.2px;
+  top: 8.2px;
+  width: 17px;
+  height: 17px;
+  z-index: 18;
+  background: white;
+  border-radius: 50px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border:1px solid black; 
+}
+
+.center a {
+  display: block;
+  width: 50%;
+  height: 50%
+}
+
+.item {
+  
+  overflow: hidden;
+  position: absolute;
+  width: 17.5px;
+  height: 17.5px;
+  transform-origin: 100% 100%;
+  -moz-transform-origin: 100% 100%;
+  -webkit-transform-origin: 100% 100%;
+  transition: background .5s;
+  -moz-transition: background .5s;
+  -webkit-transition: background .5s;
+  -o-transition: background .5s;
+  -ms-transition: background .5s;
+}
+
+.yellow-teeth {
+  background: #0000FF;
+}
+.red-teeth {
+  background: #FF3860;
+}
+.white-teet{
+  background: white;
+}
+.item1 {
+  border:1px solid black; 
+  z-index: 1;
+  transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.item2 {
+  border:1px solid black; 
+  z-index: 2;
+  transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+.item3 {
+  border:1px solid black; 
+  z-index: 3;
+  transform: rotate(225deg);
+  -moz-transform: rotate(225deg);
+  -webkit-transform: rotate(225deg);
+}
+
+.item4 {
+  border:1px solid black; 
+  z-index: 4;
+  transform: rotate(315deg);
+  -moz-transform: rotate(315deg);
+  -webkit-transform: rotate(315deg);
+}
+
+

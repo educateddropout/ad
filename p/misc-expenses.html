@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - Misc Expenses</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free-5.7.2-web/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+</head>
+<style>
+html, body {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    height: 100%;
+}
+</style>
+<body>
+    
+    <div id="miscExpenses">
+
+        <header-nav
+            :page-counter= "pageCounter"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+                <br>
+                <div class="w3-row box is-marginless">
+                    
+                    <dates-selection
+                        
+                        ref = "dateSelection"
+                        :user-data = "userData"
+                        @get-list-of-miscs = "sendListOfMiscs"
+                        @send-selected-date = "copySelectedDate"
+
+                    ></dates-selection>
+                    
+                    <br>
+                    <div class="w3-row">
+                        <button class="button w3-right is-success is-outlined" @click="printMiscRecords">
+                            <i class="fas fa-print"></i> &nbspPrint Misc Expense Records
+                        </button>
+                    </div>
+
+                    <div class="w3-row">
+                        <button class="button is-outlined is-info" @click="showAddMiscModal"> Add Misc Expense </button>
+                    </div>
+
+                    <misc-expenses-modal
+                        :user-data = "userData"
+                        :misc-data = "miscData"
+                        :modal-ctr = "modalCtr"
+                        :is-active  = "isShowMiscModal"
+                        @close-modal = "closeMiscModal"
+                        @update-misc-list = "updateMiscExpensesList"
+
+                    >
+                    </misc-expenses-modal>
+                    
+                    <br>
+                    <misc-table
+                        
+                        ref = "miscTable"
+                        :user-data = "userData"
+                        @edit-misc-expense = "showEditMiscModal"
+                        @delete-misc-expense = "deleteMiscExpense"
+
+                    ></misc-table>
+                    
+                    <modal-message
+                        :is-active = "openDelete"
+                        :message = "deleteMessage"
+                        :is-confirmation = "deleteConfirmation"
+                        @is-confirmed = "proceedMiscDeletion"
+                        @close-modal = "deleteConfirmationClose"
+
+                    >
+                    </modal-message>
+
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/utilities/getParameters.js"></script>
+    <script src="../js/utilities/validationRoutineReports.js"></script>
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/moment/min/moment.min.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/components/layouts/header.js"></script>
+
+
+    <script src="../js/components/reports/miscExpenses/datesSelection.js"></script>
+    <script src="../js/components/reports/miscExpenses/miscTable.js"></script>
+    <script src="../js/components/reports/miscExpenses/miscExpensesModal.js"></script>
+    <script src="../js/components/layouts/modalMessage.js"></script>
+
+    <script src="../js/instances/miscExpenses.js"></script>
+
+</body>
+
+</html>

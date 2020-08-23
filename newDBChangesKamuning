@@ -1,0 +1,4 @@
+ALTER TABLE `cash_denomination`
+ADD COLUMN `m10`  int(5) NOT NULL AFTER `m9`;
+
+

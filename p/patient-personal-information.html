@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ampong Dental - Patient Personal Information</title>
+
+    <link rel="stylesheet" href="../css/lib/fontawesome-free/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/w3css/v4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/login.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/ad.css">
+    <link rel="stylesheet" type="text/css" href="../css/specific/signature-pad.css">
+</head>
+<style type="text/css">
+    input[type="file"]{
+        position: absolute;
+        top: -500px;
+    }
+
+      div.file-listing{
+        width: 200px;
+    }
+
+    span.remove-file{
+        color: red;
+        cursor: pointer;
+        float: right;
+    }
+</style>
+<body>
+    
+    <div id="patientPersonalInformation">
+
+        <header-nav
+            :page-counter= "pageCounter"
+            @copy-user-data = "copyUserData"
+        ></header-nav>
+
+        <div class="w3-row">
+            <div class="w3-col l1">&nbsp</div>
+            <div class="w3-col l10">
+                <nav class="breadcrumb w3-hide-small" aria-label="breadcrumbs">
+                    <br>
+                    <ul>
+                        <li><a href="patients.html">List of Patients</a></li>
+                        <li class="is-active"><a href="#" aria-current="page">Patient Information</a></li>
+                    </ul>
+                </nav>
+
+                <div class="w3-row box is-marginless">
+
+                    <patient-tab-selection
+                        :user-data = "userData"
+                        :current-tab = "currentTab"
+                        :patient-id = "patientId"
+                    ></patient-tab-selection>
+                    
+                    <div class="w3-row">
+                        <div class="w3-col l1"> &nbsp </div>
+                        <div class="w3-col l10">
+                            <div class="w3-row">
+                                <button class="button is-danger is-outlined w3-right" @click="openArchiveConfirmation">
+                                    <i class="fas fa-user-times"></i> &nbsp Archive Profile
+                                </button>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="w3-col l1"> &nbsp </div>
+                        <modal-message
+                            :is-active = "showArchiveConfirmation"
+                            :message = "archiveConfirmationMessage"
+                            :is-confirmation = "true"
+                            @close-modal = "closeArchiveConfirmation"
+                            @is-confirmed = "archivePatientProfile"
+                        >
+                        </modal-message>
+                    </div>
+
+                    <patient-personal-information-div
+                    ></patient-personal-information-div>
+                    
+                    <br>
+                    <div class="w3-row is-marginless">
+                        <div class="w3-col l1">&nbsp</div>
+                        <div class="w3-col l10">
+                            <div class="w3-row box is-marginless">
+                                <div class="row">
+                                    <span class="is-size-4">
+                                        <strong>
+                                            Patient Signature
+                                        </strong>
+                                        
+                                    </span>
+                                </div>
+                                <hr>
+                                <div class="w3-row">
+                                    <div class="w3-col l2">&nbsp</div>
+                                    <div class="w3-col l8">
+                                        <div class="w3-border w3-border-blue-grey w3-bottombar w3-round w3-card w3-center">
+                                            <img :src="signatureImg " @error="imageUrlAlt">
+                                        </div>
+                                    </div>
+                                    <div class="w3-col l2">&nbsp</div>
+                                </div>
+                                <hr>
+                                <div class="w3-row">
+                                    <button class="button is-info is-outlined w3-hide-small" @click="openPatientUpdateSignatureModal"><i class="fas fa-pen"></i> &nbsp|Update Patient E-Signature</button>
+                                    <button class="button is-info is-outlined w3-hide-medium w3-hide-large" @click="openPatientUpdateSignatureModal"><i class="fas fa-pen"></i> &nbsp|&nbspUpdate</button>
+                                </div>
+
+                                <update-modal-signature
+                                    :patient-id = "patientId"
+                                    :is-update-signature-modal-active = "isUpdateSignatureModalActive"
+                                    @close-update-signature-modal = "closePatientUpdateSignatureModal()"
+                                    @refresh-page = "refreshPage"
+                                >
+                                </update-modal-signature>
+
+                            </div>
+
+                        </div>
+                        <div class="w3-col l1">&nbsp</div>
+                       
+                    </div>
+
+                </div>
+            </div>
+            <div class="w3-col l1">&nbsp</div>
+        </div>
+        <br>
+
+    </div>
+
+    <!-- script frame -->
+    <script src="../js/lib/jquery/dist/jquery.min.js"></script>
+    <script src="../js/lib/vue/dist/vue.js"></script>
+    <script src="../js/lib/axios/dist/axios.min.js"></script>
+    <script src="../js/lib/signature_pad/dist/signature_pad.umd.min.js"></script>
+
+    <script src="../js/utilities/getParameters.js"></script>
+    <script src="../js/utilities/lib.js"></script>
+    <script src="../js/utilities/validationRoutinePatientInformation.js"></script>
+
+    <script src="../js/components/layouts/header.js"></script>
+    <script src="../js/components/layouts/modalMessage.js"></script>
+
+    <script src="../js/components/patient/patientTabSelection.js"></script>
+
+    <script src="../js/components/patient/patientPersonalInformation/updatePersonalInformationModal.js"></script>
+    <script src="../js/components/patient/patientPersonalInformation/updateMedicalHistoryInformationModal.js"></script>
+    <script src="../js/components/patient/patientPersonalInformation/patientPersonalInformationDiv.js"></script>
+    <script src="../js/components/patient/patientPersonalInformation/medicalHistoryInformation.js"></script>
+    <script src="../js/components/patient/patientPersonalInformation/personalInformation.js"></script>
+    <script src="../js/components/patient/patientPersonalInformation/updateSignatureModal.js"></script>
+
+    <script src="../js/instances/patientPersonalInformation.js"></script>
+
+</body>
+
+</html>
