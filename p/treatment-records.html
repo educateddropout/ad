@@ -19,7 +19,6 @@ html, body {
     font-size: 13px;
     line-height: 1.5;
     height: 100%;
-    background: #ECF0F3;
 }
 </style>
 <body>
@@ -47,10 +46,21 @@ html, body {
 
                     <br>
                     <br>
+                    <filters-treatment
+
+                        :user-data = "userData"
+                        :dentist-check = "dentistCheck"
+                        :dentists-library = "dentistsLibrary"
+
+                    ></filters-treatment>
+                    <br>
+                    <br>
                     <treatments-table
                         
                         ref = "treatmentsTable"
                         :user-data = "userData"
+                        :dentist-check = "dentistCheck"
+                        :dentists-library = "dentistsLibrary"
 
                     ></treatments-table>
 
@@ -72,6 +82,7 @@ html, body {
 
     <script src="../js/components/reports/treatment/datesSelection.js"></script>
     <script src="../js/components/reports/treatment/treatmentsTable.js"></script>
+    <script src="../js/components/reports/treatment/filtersTreatment.js"></script>
 
     <script src="../js/instances/treatments.js"></script>
 

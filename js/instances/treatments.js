@@ -16,7 +16,31 @@ var tr = new Vue({
 			userType : -1,
 			isDentist : -1,
 			allowedAccess : 0
+		},
+		dentistsLibrary : [],
+		dentistCheck: {
+			id : []
 		}
+
+	},
+
+	created(){
+		let self = this;
+		//list of dentist
+		axios.get('../php/api/listOfDentist.php')
+		.then(function (response){
+			console.log(response.data);
+			self.dentistsLibrary = response.data.list_of_dentists;
+
+			for(let i = 0; i < response.data.list_of_dentists.length; i++){
+				self.dentistCheck.id[i] = true;
+			}
+
+		})
+		.catch(function (error) {
+			alert(error);
+		});
+
 	},
 
 	methods: {

@@ -387,15 +387,3 @@ function validateUsertype(data){
 	return retVal;
 
 }
-
-function validateIsDentist(data){
-
-	let retVal = "";
-
-	if(data == -1){
-		retVal = 'This is required!';
-	}
-
-	return retVal;
-
-}
